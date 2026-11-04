@@ -1,0 +1,830 @@
+<!doctype html>
+<html lang="da">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="robots" content="noindex, nofollow">
+<title>LAN hos Larsen i Skive</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Figtree:wght@400;500;600;700&display=swap">
+<style>
+/* Layout: én kolonne på max 780px; mørk "billet"-top med de praktiske fakta, derefter sektioner i den rækkefølge man planlægger i */
+:root {
+  --bg: #EDF0F3;
+  --surface: #FFFFFF;
+  --ink: #13202A;
+  --muted: #5A6A76;
+  --line: #D2D9DF;
+  --accent: #C2410C;
+  --accent-soft: #FCE7DA;
+  --on-accent: #FFFFFF;
+  --hero-bg: #13202A;
+  --hero-ink: #F1F4F6;
+  --hero-muted: #A7B4BE;
+  --hero-line: #2A3945;
+  --font-display: "Chakra Petch", "Segoe UI", system-ui, sans-serif;
+  --font-body: "Figtree", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --radius: 10px;
+  color-scheme: light;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #0D141A; --surface: #151F27; --ink: #E5EBEF; --muted: #93A2AD; --line: #25333D;
+    --accent: #FB8C4C; --accent-soft: #3B2214; --on-accent: #1A0F08;
+    --hero-bg: #18242E; --hero-ink: #F1F4F6; --hero-muted: #A0AEB8; --hero-line: #2C3B47;
+    color-scheme: dark;
+  }
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 16px;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: 4px;
+}
+.wrap {
+  max-width: 780px;
+  margin: 0 auto;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+
+/* ---------- Hero / billet ---------- */
+.hero { background: var(--hero-bg); color: var(--hero-ink); padding-top: env(safe-area-inset-top, 0px); }
+.hero .wrap { padding-block: 40px 32px; display: grid; gap: 28px; }
+.eyebrow {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: 0.8rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--hero-muted);
+  display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center;
+}
+.countdown { color: var(--accent); border: 1px solid currentColor; border-radius: 999px; padding: 2px 10px; letter-spacing: 0.08em; }
+.hero h1 {
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: clamp(2.4rem, 8vw, 3.6rem);
+  line-height: 1;
+  margin: 10px 0 0;
+  text-wrap: balance;
+}
+.dates {
+  font-family: var(--font-display);
+  font-weight: 500;
+  font-size: clamp(1.25rem, 4vw, 1.6rem);
+  margin: 10px 0 0;
+  font-variant-numeric: tabular-nums;
+}
+.dates span { color: var(--hero-muted); }
+.facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px dashed var(--hero-line); margin: 0; }
+.fact { padding: 16px 16px 16px 0; border-bottom: 1px dashed var(--hero-line); min-width: 0; }
+.fact:nth-child(even) { padding-left: 16px; border-left: 1px dashed var(--hero-line); }
+.fact dt { font-family: var(--font-display); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--hero-muted); }
+.fact dd { margin: 4px 0 0; font-weight: 500; }
+
+/* ---------- Nav ---------- */
+.nav { border-bottom: 1px solid var(--line); background: var(--surface); }
+.nav .wrap { padding-block: 10px; display: flex; flex-wrap: wrap; gap: 4px 18px; }
+.nav a { font-family: var(--font-display); font-weight: 600; font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: 4px 0; }
+.nav a:hover { color: var(--accent); }
+
+/* ---------- Kontroller ---------- */
+input[type="text"], select {
+  font: inherit;
+  font-size: 0.95rem;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 7px 10px;
+  min-width: 0;
+}
+input[type="text"]::placeholder { color: var(--muted); }
+.btn {
+  font: 600 0.88rem var(--font-body);
+  color: var(--on-accent);
+  background: var(--accent);
+  border: 1px solid var(--accent);
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.btn:hover { filter: brightness(1.08); }
+.btn[disabled], .ghost[disabled], .vote[disabled] { opacity: 0.55; cursor: progress; }
+.ghost {
+  font: 600 0.85rem var(--font-body);
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  padding: 6px 12px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.ghost:hover { color: var(--ink); border-color: var(--muted); }
+.linkbtn {
+  font: 500 0.82rem var(--font-body);
+  color: var(--muted);
+  background: none;
+  border: 0;
+  padding: 0;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+}
+.linkbtn:hover { color: var(--accent); }
+
+/* ---------- Sektioner ---------- */
+main .wrap { padding-block: 24px 48px; display: grid; gap: 52px; }
+section { display: grid; gap: 18px; scroll-margin-top: 16px; min-width: 0; }
+.sec-head { display: grid; gap: 6px; }
+h2 { font-family: var(--font-display); font-weight: 700; font-size: 1.6rem; line-height: 1.15; margin: 0; text-wrap: balance; }
+.lead { margin: 0; color: var(--muted); max-width: 62ch; }
+h3 { font-family: var(--font-display); font-weight: 600; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin: 0; }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
+.note { color: var(--muted); font-size: 0.9rem; margin: 0; }
+.callout { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; padding: 14px 18px; background: var(--accent-soft); border-radius: var(--radius); }
+.callout strong { font-family: var(--font-display); letter-spacing: 0.04em; }
+.flag {
+  font-family: var(--font-display); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
+  color: var(--accent); background: var(--accent-soft); border-radius: 4px; padding: 1px 6px; margin-left: 4px; white-space: nowrap;
+}
+
+/* Hvem er du */
+.whoami { display: grid; gap: 10px; padding: 16px 20px; }
+.whoami-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.whoami label { font-weight: 600; }
+.whoami input { flex: 1 1 200px; max-width: 280px; }
+.sync { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; font-size: 0.85rem; color: var(--muted); }
+.sync.error { color: var(--accent); }
+.hint { color: var(--accent); font-size: 0.88rem; margin: 0; }
+
+/* Pakkeliste */
+.pack-bar { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; justify-content: space-between; }
+.progress { flex: 1 1 220px; display: grid; gap: 6px; }
+.progress-label { font-weight: 600; font-variant-numeric: tabular-nums; }
+.track { height: 6px; border-radius: 999px; background: var(--line); overflow: hidden; }
+.fill { height: 100%; width: 0; background: var(--accent); transition: width 0.25s ease; }
+.pack-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
+.pack-group { background: var(--surface); padding: 18px 20px; display: grid; gap: 10px; align-content: start; }
+.pack-group.wide { grid-column: 1 / -1; }
+.pack-group ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.pack-group label { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
+.pack-group input { accent-color: var(--accent); width: 18px; height: 18px; margin: 3px 0 0; flex: none; }
+.pack-group input:checked + span { color: var(--muted); text-decoration: line-through; }
+
+/* Sovepladser */
+.party { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
+.slot { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; display: grid; gap: 4px; align-content: start; min-width: 0; }
+.slot .n { font-family: var(--font-display); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; color: var(--muted); font-variant-numeric: tabular-nums; }
+.slot .who { font-weight: 700; overflow-wrap: anywhere; }
+.slot .where { color: var(--ink); }
+.slot .act { margin-top: 6px; }
+.slot.open { border-style: dashed; background: transparent; }
+.slot.open .who { color: var(--muted); font-weight: 600; }
+
+/* Madplan */
+.meal-day { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 12px; padding: 14px 20px; border-top: 1px solid var(--line); }
+.meal-day:first-child { border-top: 0; }
+.day-name { font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; }
+.day-name small { display: block; font-family: var(--font-body); font-weight: 500; font-size: 0.8rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.meal-list { display: grid; gap: 8px; min-width: 0; }
+.meal { display: grid; grid-template-columns: 76px minmax(0, 1fr) auto; gap: 4px 12px; align-items: baseline; }
+.meal .when { color: var(--muted); font-size: 0.9rem; }
+.meal .what { overflow-wrap: anywhere; }
+.meal .what.tbd { color: var(--muted); font-style: italic; }
+.meal .who { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline; justify-content: flex-end; }
+.pill { font-size: 0.8rem; font-weight: 600; padding: 2px 10px; border-radius: 999px; background: var(--bg); border: 1px solid var(--line); white-space: nowrap; }
+.meal-form { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 10px 12px; background: var(--bg); border-radius: 8px; }
+.meal-form input { flex: 1 1 220px; }
+
+/* Aktiviteter */
+.acts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.act { padding: 18px 20px; display: grid; gap: 12px; align-content: start; min-width: 0; }
+.idea-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+.idea { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: start; }
+.idea .title { overflow-wrap: anywhere; }
+.idea .by { display: block; font-size: 0.8rem; color: var(--muted); }
+.vote {
+  font: 600 0.8rem var(--font-body);
+  color: var(--muted);
+  background: transparent;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: 2px 10px;
+  cursor: pointer;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+.vote:hover { border-color: var(--accent); color: var(--accent); }
+.vote[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.empty { color: var(--muted); font-style: italic; margin: 0; }
+.add-idea { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 16px 20px; }
+.add-idea input { flex: 1 1 240px; }
+
+/* Økonomi */
+.money { margin: 0; }
+.money-row { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 4px 16px; padding: 14px 20px; border-top: 1px solid var(--line); }
+.money-row:first-child { border-top: 0; }
+.money-row dt { font-weight: 600; }
+.money-row dd { margin: 0; }
+
+footer { color: var(--muted); font-size: 0.85rem; padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px)); }
+footer .wrap { display: grid; gap: 4px; }
+
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+@media (max-width: 600px) {
+  .party { grid-template-columns: 1fr; gap: 0; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); overflow: hidden; }
+  .slot { grid-template-columns: 40px minmax(0, 1fr) auto; align-items: baseline; gap: 4px 10px; border: 0; border-top: 1px solid var(--line); border-radius: 0; }
+  .slot:first-child { border-top: 0; }
+  .slot.open { border-style: solid; border-width: 1px 0 0; background: var(--surface); }
+  .slot:first-child.open { border-top: 0; }
+  .slot .where { grid-column: 2; grid-row: 2; color: var(--muted); font-size: 0.9rem; }
+  .slot .act { grid-column: 3; grid-row: 1 / span 2; margin: 0; align-self: center; }
+  .pack-grid, .acts { grid-template-columns: 1fr; }
+  .meal-day { grid-template-columns: 1fr; gap: 8px; }
+  .day-name small { display: inline; margin-left: 8px; }
+  .money-row { grid-template-columns: 1fr; }
+}
+@media (max-width: 480px) {
+  .facts { grid-template-columns: 1fr; }
+  .fact:nth-child(even) { padding-left: 0; border-left: 0; }
+  .meal { grid-template-columns: 64px minmax(0, 1fr); }
+  .meal .who { grid-column: 2; justify-content: flex-start; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .fill { transition: none; }
+  html { scroll-behavior: auto; }
+}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="wrap">
+    <div>
+      <div class="eyebrow"><span>Uge 46 · Skive</span><span class="countdown" id="countdown">12.–15. november</span></div>
+      <h1>LAN hos Larsen</h1>
+      <p class="dates">Torsdag 12. <span>til</span> søndag 15. november 2026</p>
+    </div>
+    <dl class="facts">
+      <div class="fact"><dt>Adresse</dt><dd>Står i gruppechatten</dd></div>
+      <div class="fact"><dt>Ankomst</dt><dd>Torsdag kl. 16.30</dd></div>
+      <div class="fact"><dt>Afgang</dt><dd>Søndag</dd></div>
+      <div class="fact"><dt>Parkering</dt><dd>Ude foran huset langs hækken</dd></div>
+    </dl>
+  </div>
+</div>
+
+<nav class="nav" aria-label="Sektioner">
+  <div class="wrap">
+    <a href="#pakkeliste">Pakkeliste</a>
+    <a href="#sovepladser">Sovepladser</a>
+    <a href="#madplan">Madplan</a>
+    <a href="#aktiviteter">Aktiviteter</a>
+    <a href="#okonomi">Økonomi</a>
+  </div>
+</nav>
+
+<main>
+  <div class="wrap">
+
+    <div class="panel whoami">
+      <div class="whoami-row">
+        <label for="me">Hvem er du?</label>
+        <input type="text" id="me" maxlength="40" placeholder="Dit navn" autocomplete="nickname">
+      </div>
+      <p class="hint" id="me-hint" hidden>Skriv dit navn her først, så de andre kan se, hvem der har meldt sig.</p>
+      <div class="sync" id="sync" role="status"><span id="sync-text">Henter fælles data…</span><button class="linkbtn" id="sync-retry" type="button" hidden>Prøv igen</button></div>
+    </div>
+
+    <section id="pakkeliste" aria-labelledby="h-pak">
+      <div class="sec-head">
+        <h2 id="h-pak">Pakkeliste</h2>
+        <p class="lead">Alle tager eget setup med, og spillene skal være downloadet og opdateret hjemmefra, så vi ikke brænder torsdagen af på downloads.</p>
+      </div>
+      <div class="callout"><strong>Mangler</strong><span>Én, der tager en switch med, så der er LAN-stik nok til alle. Jeg har ikke selv en, så sig til i gruppen, hvis du har en.</span></div>
+      <div class="pack-bar">
+        <div class="progress">
+          <span class="progress-label" id="pack-count">0 af 15 pakket</span>
+          <div class="track" aria-hidden="true"><div class="fill" id="pack-fill"></div></div>
+        </div>
+        <button class="ghost" id="pack-reset" type="button">Nulstil liste</button>
+      </div>
+      <div class="pack-grid" id="pack">
+        <div class="pack-group">
+          <h3>Setup</h3>
+          <ul>
+            <li><label><input type="checkbox" id="p-pc"><span>PC + strømkabel</span></label></li>
+            <li><label><input type="checkbox" id="p-skaerm"><span>Skærm(e) + strøm- og HDMI/DP-kabel</span></label></li>
+            <li><label><input type="checkbox" id="p-tast"><span>Tastatur, mus og musemåtte</span></label></li>
+            <li><label><input type="checkbox" id="p-headset"><span>Headset med mikrofon</span></label></li>
+          </ul>
+        </div>
+        <div class="pack-group">
+          <h3>Netværk og strøm</h3>
+          <ul>
+            <li><label><input type="checkbox" id="p-kabel"><span>Netværkskabel, gerne 5–10 m</span></label></li>
+            <li><label><input type="checkbox" id="p-stik"><span>Stikdåse/forlængerledning</span></label></li>
+            <li><label><input type="checkbox" id="p-switch"><span>Switch, hvis du har en <span class="flag">Mangler</span></span></label></li>
+          </ul>
+        </div>
+        <div class="pack-group">
+          <h3>Sovegrej</h3>
+          <ul>
+            <li><label><input type="checkbox" id="p-dyne"><span>Dyne eller sovepose, pude og lagen</span></label></li>
+            <li><label><input type="checkbox" id="p-madras"><span>Madras <span class="note">(se Sovepladser)</span></span></label></li>
+          </ul>
+        </div>
+        <div class="pack-group">
+          <h3>Personligt</h3>
+          <ul>
+            <li><label><input type="checkbox" id="p-toilet"><span>Toiletsager og håndklæde</span></label></li>
+            <li><label><input type="checkbox" id="p-toej"><span>Skiftetøj og indesko</span></label></li>
+            <li><label><input type="checkbox" id="p-varmt"><span>Varmt tøj + regnjakke til turen udenfor</span></label></li>
+            <li><label><input type="checkbox" id="p-oplader"><span>Telefonoplader</span></label></li>
+          </ul>
+        </div>
+        <div class="pack-group wide">
+          <h3>Til fællesskabet (valgfrit)</h3>
+          <ul>
+            <li><label><input type="checkbox" id="p-spil"><span>Brætspil, kortspil eller pokerchips</span></label></li>
+            <li><label><input type="checkbox" id="p-snacks"><span>Ekstra snacks eller drikke, du selv vil have</span></label></li>
+          </ul>
+        </div>
+      </div>
+      <p class="note">Flueben gemmes kun i din egen browser.</p>
+    </section>
+
+    <section id="sovepladser" aria-labelledby="h-sov">
+      <div class="sec-head">
+        <h2 id="h-sov">Sovepladser</h2>
+        <p class="lead">Vi er fem. Sengen er taget, der er en sofa, og vi har en madras til én. De sidste to tager selv madras med. Skriv dig på en plads.</p>
+      </div>
+      <div class="party" id="party">
+        <div class="slot"><span class="n">1/5</span><span class="who">Andreas</span><span class="where">Seng</span></div>
+      </div>
+      <div class="callout"><strong>Borde</strong><span>Der er borde nok til alle, så du skal ikke tage bord med.</span></div>
+    </section>
+
+    <section id="madplan" aria-labelledby="h-mad">
+      <div class="sec-head">
+        <h2 id="h-mad">Madplan</h2>
+        <p class="lead">Samme model som sidst: Jeg står for morgen og frokost, aftensmaden tager vi på skift, og lørdag er festmåltid. Tag en aften og skriv, hvad du laver.</p>
+      </div>
+      <div class="panel">
+        <div class="meal-day">
+          <div class="day-name">Torsdag<small>12/11</small></div>
+          <div class="meal-list" data-dinner="tor"></div>
+        </div>
+        <div class="meal-day">
+          <div class="day-name">Fredag<small>13/11</small></div>
+          <div class="meal-list" data-dinner="fre">
+            <div class="meal"><span class="when">Morgen</span><span class="what">Blandet morgenbord</span><span class="who"><span class="pill">Jeg handler ind</span></span></div>
+            <div class="meal"><span class="when">Frokost</span><span class="what">Blandet frokost</span><span class="who"><span class="pill">Jeg handler ind</span></span></div>
+          </div>
+        </div>
+        <div class="meal-day">
+          <div class="day-name">Lørdag<small>14/11</small></div>
+          <div class="meal-list" data-dinner="lor">
+            <div class="meal"><span class="when">Morgen</span><span class="what">Blandet morgenbord</span><span class="who"><span class="pill">Jeg handler ind</span></span></div>
+            <div class="meal"><span class="when">Frokost</span><span class="what">Blandet frokost</span><span class="who"><span class="pill">Jeg handler ind</span></span></div>
+          </div>
+        </div>
+        <div class="meal-day">
+          <div class="day-name">Søndag<small>15/11</small></div>
+          <div class="meal-list">
+            <div class="meal"><span class="when">Morgen</span><span class="what">Blandet morgenbord</span><span class="who"><span class="pill">Jeg handler ind</span></span></div>
+          </div>
+        </div>
+      </div>
+      <p class="note">Fredag og lørdag aften kan byttes om.</p>
+    </section>
+
+    <section id="aktiviteter" aria-labelledby="h-akt">
+      <div class="sec-head">
+        <h2 id="h-akt">Aktiviteter</h2>
+        <p class="lead">Idéer til hvad vi kan lave. Vi er fem, så vi er præcis et fuldt M+-hold. Stem på det, du helst vil, eller tilføj din egen idé.</p>
+      </div>
+      <div class="acts" id="acts"></div>
+      <form class="panel add-idea" id="idea-form">
+        <label class="sr-only" for="idea-cat">Kategori</label>
+        <select id="idea-cat">
+          <option>Gaming</option>
+          <option>Andre aktiviteter</option>
+          <option>Udenfor</option>
+          <option>Ud af huset</option>
+        </select>
+        <label class="sr-only" for="idea-title">Din idé</label>
+        <input type="text" id="idea-title" maxlength="140" placeholder="Din idé, fx 'Pubquiz fredag aften'">
+        <button class="btn" type="submit" id="idea-submit">Tilføj idé</button>
+      </form>
+    </section>
+
+    <section id="okonomi" aria-labelledby="h-oko">
+      <div class="sec-head">
+        <h2 id="h-oko">Økonomi</h2>
+        <p class="lead">Fælles udgifter deles ligeligt mellem os fem via MobilePay.</p>
+      </div>
+      <dl class="panel money">
+        <div class="money-row"><dt>Morgenmad og frokost</dt><dd>På min regning</dd></div>
+        <div class="money-row"><dt>Drikkevarer og snacks</dt><dd>Fælles indkøb, deles ligeligt i fem</dd></div>
+        <div class="money-row"><dt>Aftensmad</dt><dd>Den, der laver maden, lægger ud og sender en MobilePay-anmodning bagefter</dd></div>
+        <div class="money-row"><dt>Festmåltid lørdag</dt><dd>Deles ligeligt</dd></div>
+      </dl>
+    </section>
+
+  </div>
+</main>
+
+<footer>
+  <div class="wrap">
+    <span>Kokke, sovepladser og idéer gemmes i en fælles database, som alle med linket kan skrive i.</span>
+    <span>Sidst opdateret 4. november 2026</span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var SB_URL = 'https://xynzvctgnrvhavsapoxn.supabase.co';
+  var SB_KEY = 'sb_publishable_QwrLYS_LosI5_EgFuLRgew_wrwGl0hd';
+  var CATEGORIES = ['Gaming', 'Andre aktiviteter', 'Udenfor', 'Ud af huset'];
+
+  function $(id) { return document.getElementById(id); }
+  function el(tag, cls, text) {
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+  function store(key, val) {
+    try {
+      if (val === undefined) return localStorage.getItem(key);
+      localStorage.setItem(key, val);
+    } catch (e) { return null; }
+  }
+
+  // ---------- Nedtælling ----------
+  var start = new Date(2026, 10, 12, 16, 30, 0);
+  var end = new Date(2026, 10, 15, 13, 0, 0);
+  function dayStart(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
+  function updateCountdown() {
+    var now = new Date(), text;
+    if (now >= end) text = 'Tak for denne gang';
+    else if (now >= start) text = 'LAN er i gang';
+    else {
+      var days = Math.round((dayStart(start) - dayStart(now)) / 86400000);
+      text = days > 1 ? 'Om ' + days + ' dage' : days === 1 ? 'I morgen kl. 16.30' : 'I dag kl. 16.30';
+    }
+    $('countdown').textContent = text;
+  }
+  updateCountdown();
+  setInterval(updateCountdown, 60000);
+
+  // ---------- Pakkeliste (lokalt) ----------
+  var PACK_KEY = 'lan-skive-2026-pak';
+  var boxes = Array.prototype.slice.call(document.querySelectorAll('#pack input[type="checkbox"]'));
+  var saved = {};
+  try { saved = JSON.parse(store(PACK_KEY) || '{}') || {}; } catch (e) { saved = {}; }
+  boxes.forEach(function (b) { if (saved[b.id]) b.checked = true; });
+  function renderPack() {
+    var n = boxes.filter(function (b) { return b.checked; }).length;
+    $('pack-count').textContent = n === boxes.length ? 'Alt er pakket' : n + ' af ' + boxes.length + ' pakket';
+    $('pack-fill').style.width = (n / boxes.length * 100) + '%';
+  }
+  function savePack() {
+    var o = {};
+    boxes.forEach(function (b) { if (b.checked) o[b.id] = 1; });
+    store(PACK_KEY, JSON.stringify(o));
+  }
+  boxes.forEach(function (b) { b.addEventListener('change', function () { savePack(); renderPack(); }); });
+  $('pack-reset').addEventListener('click', function () { boxes.forEach(function (b) { b.checked = false; }); savePack(); renderPack(); });
+  renderPack();
+
+  // ---------- Navn ----------
+  var NAME_KEY = 'lan-skive-2026-navn';
+  var meInput = $('me');
+  meInput.value = store(NAME_KEY) || '';
+  meInput.addEventListener('input', function () {
+    store(NAME_KEY, meInput.value.trim());
+    if (meInput.value.trim()) $('me-hint').hidden = true;
+    renderIdeas();
+  });
+  function me() { return meInput.value.trim(); }
+  function requireName() {
+    if (me()) return me();
+    $('me-hint').hidden = false;
+    meInput.focus();
+    meInput.scrollIntoView({ block: 'center' });
+    return null;
+  }
+
+  // ---------- Supabase REST ----------
+  function api(path, opts) {
+    opts = opts || {};
+    return fetch(SB_URL + '/rest/v1/' + path, {
+      method: opts.method || 'GET',
+      headers: { apikey: SB_KEY, 'Content-Type': 'application/json', Prefer: 'return=representation' },
+      body: opts.body ? JSON.stringify(opts.body) : undefined
+    }).then(function (res) {
+      return res.text().then(function (t) {
+        var data = null;
+        try { data = t ? JSON.parse(t) : null; } catch (e) {}
+        if (!res.ok) {
+          var err = new Error((data && data.message) || ('Fejl ' + res.status));
+          err.status = res.status;
+          throw err;
+        }
+        return data;
+      });
+    });
+  }
+
+  var state = { cooks: null, spots: null, ideas: null };
+  var openForm = null; // id på åben kok-formular
+  var focusForm = false;
+
+  function setSync(text, isError) {
+    $('sync').classList.toggle('error', !!isError);
+    $('sync-text').textContent = text;
+    $('sync-retry').hidden = !isError;
+  }
+  function stamp() {
+    var d = new Date();
+    return 'Opdateret kl. ' + String(d.getHours()).padStart(2, '0') + '.' + String(d.getMinutes()).padStart(2, '0');
+  }
+
+  function load() {
+    return Promise.all([
+      api('cook_slots?select=id,sort,day_label,cook_name,dish&order=sort'),
+      api('sleep_spots?select=id,sort,spot,person_name&order=sort'),
+      api('ideas?select=id,category,title,url,added_by,created_at,idea_votes(voter)&order=id')
+    ]).then(function (r) {
+      state.cooks = r[0]; state.spots = r[1]; state.ideas = r[2];
+      setSync(stamp());
+      renderAll();
+    }).catch(function () {
+      setSync('Kunne ikke hente fælles data. Tjek forbindelsen og prøv igen.', true);
+      renderAll();
+    });
+  }
+  $('sync-retry').addEventListener('click', load);
+
+  function act(btn, promise, failText) {
+    if (btn) btn.disabled = true;
+    return promise.then(load).catch(function (e) {
+      setSync(failText || ('Det gik ikke: ' + e.message), true);
+      if (btn) btn.disabled = false;
+    });
+  }
+
+  // ---------- Madplan: aftener ----------
+  function renderCooks() {
+    ['tor', 'fre', 'lor'].forEach(function (id) {
+      var list = document.querySelector('[data-dinner="' + id + '"]');
+      Array.prototype.slice.call(list.querySelectorAll('.dinner, .meal-form')).forEach(function (n) { n.remove(); });
+      var slot = state.cooks && state.cooks.filter(function (c) { return c.id === id; })[0];
+      var row = el('div', 'meal dinner');
+      row.appendChild(el('span', 'when', 'Aften'));
+      if (!slot) {
+        row.appendChild(el('span', 'what tbd', state.cooks ? 'Ikke fundet' : 'Henter…'));
+        row.appendChild(el('span', 'who'));
+        list.appendChild(row);
+        return;
+      }
+      row.appendChild(el('span', 'what' + (slot.dish ? '' : ' tbd'), slot.dish || 'Ret ikke valgt endnu'));
+      var who = el('span', 'who');
+      if (slot.cook_name) {
+        who.appendChild(el('span', 'pill', slot.cook_name));
+        var edit = el('button', 'linkbtn', 'Ret');
+        edit.type = 'button';
+        edit.addEventListener('click', function () { openForm = openForm === id ? null : id; focusForm = true; renderCooks(); });
+        who.appendChild(edit);
+      } else {
+        var take = el('button', 'btn', 'Tag aftenen');
+        take.type = 'button';
+        take.addEventListener('click', function () {
+          if (!requireName()) return;
+          openForm = openForm === id ? null : id;
+          focusForm = true;
+          renderCooks();
+        });
+        who.appendChild(take);
+      }
+      row.appendChild(who);
+      list.appendChild(row);
+
+      if (openForm === id) {
+        var form = el('form', 'meal-form');
+        var label = el('label', 'sr-only', 'Hvad laver du ' + slot.day_label.toLowerCase() + '?');
+        var input = el('input');
+        input.type = 'text';
+        input.id = 'dish-' + id;
+        label.htmlFor = input.id;
+        input.maxLength = 120;
+        input.placeholder = 'Hvad laver du?';
+        input.value = slot.dish || '';
+        var save = el('button', 'btn', slot.cook_name ? 'Gem' : 'Tag aftenen');
+        save.type = 'submit';
+        var cancel = el('button', 'ghost', 'Annullér');
+        cancel.type = 'button';
+        cancel.addEventListener('click', function () { openForm = null; renderCooks(); });
+        form.appendChild(label); form.appendChild(input); form.appendChild(save); form.appendChild(cancel);
+        if (slot.cook_name) {
+          var release = el('button', 'linkbtn', 'Frigiv aftenen');
+          release.type = 'button';
+          release.addEventListener('click', function () {
+            openForm = null;
+            act(release, api('cook_slots?id=eq.' + id, { method: 'PATCH', body: { cook_name: null } }));
+          });
+          form.appendChild(release);
+        }
+        form.addEventListener('submit', function (ev) {
+          ev.preventDefault();
+          var dish = input.value.trim() || null;
+          if (slot.cook_name) {
+            openForm = null;
+            act(save, api('cook_slots?id=eq.' + id, { method: 'PATCH', body: { dish: dish } }));
+          } else {
+            var name = requireName();
+            if (!name) return;
+            save.disabled = true;
+            api('cook_slots?id=eq.' + id + '&cook_name=is.null', { method: 'PATCH', body: { cook_name: name, dish: dish } })
+              .then(function (rows) {
+                openForm = null;
+                if (!rows || !rows.length) setSync('Nogen nåede at tage aftenen før dig.', true);
+                return load();
+              })
+              .catch(function (e) { save.disabled = false; setSync('Det gik ikke: ' + e.message, true); });
+          }
+        });
+        list.appendChild(form);
+        if (focusForm) { focusForm = false; input.focus(); }
+      }
+    });
+  }
+
+  // ---------- Sovepladser ----------
+  function renderSpots() {
+    var party = $('party');
+    Array.prototype.slice.call(party.querySelectorAll('.slot.dyn')).forEach(function (n) { n.remove(); });
+    var spots = state.spots || [];
+    if (!state.spots) {
+      for (var i = 0; i < 4; i++) {
+        var s = el('div', 'slot dyn open');
+        s.appendChild(el('span', 'n', (i + 2) + '/5'));
+        s.appendChild(el('span', 'who', 'Henter…'));
+        party.appendChild(s);
+      }
+      return;
+    }
+    spots.forEach(function (sp, i) {
+      var taken = !!sp.person_name;
+      var card = el('div', 'slot dyn' + (taken ? '' : ' open'));
+      card.appendChild(el('span', 'n', (i + 2) + '/5'));
+      card.appendChild(el('span', 'who', taken ? sp.person_name : 'Ledig'));
+      card.appendChild(el('span', 'where', sp.spot));
+      var actWrap = el('span', 'act');
+      if (taken) {
+        var rm = el('button', 'linkbtn', 'Fjern');
+        rm.type = 'button';
+        rm.setAttribute('aria-label', 'Fjern ' + sp.person_name + ' fra ' + sp.spot);
+        rm.addEventListener('click', function () {
+          act(rm, api('sleep_spots?id=eq.' + sp.id, { method: 'PATCH', body: { person_name: null } }));
+        });
+        actWrap.appendChild(rm);
+      } else {
+        var mine = el('button', 'btn', 'Det er mig');
+        mine.type = 'button';
+        mine.setAttribute('aria-label', 'Skriv mig på ' + sp.spot);
+        mine.addEventListener('click', function () {
+          var name = requireName();
+          if (!name) return;
+          var old = spots.filter(function (o) { return o.person_name === name && o.id !== sp.id; });
+          mine.disabled = true;
+          api('sleep_spots?id=eq.' + sp.id + '&person_name=is.null', { method: 'PATCH', body: { person_name: name } })
+            .then(function (rows) {
+              if (!rows || !rows.length) { setSync('Pladsen blev taget lige før dig.', true); return; }
+              return Promise.all(old.map(function (o) {
+                return api('sleep_spots?id=eq.' + o.id, { method: 'PATCH', body: { person_name: null } });
+              }));
+            })
+            .then(load)
+            .catch(function (e) { mine.disabled = false; setSync('Det gik ikke: ' + e.message, true); });
+        });
+        actWrap.appendChild(mine);
+      }
+      card.appendChild(actWrap);
+      party.appendChild(card);
+    });
+  }
+
+  // ---------- Idéer og stemmer ----------
+  function renderIdeas() {
+    var acts = $('acts');
+    acts.textContent = '';
+    var name = me();
+    CATEGORIES.forEach(function (cat) {
+      var panel = el('div', 'panel act');
+      panel.appendChild(el('h3', null, cat));
+      if (!state.ideas) {
+        panel.appendChild(el('p', 'empty', 'Henter…'));
+        acts.appendChild(panel);
+        return;
+      }
+      var items = state.ideas.filter(function (i) { return i.category === cat; });
+      items.sort(function (a, b) { return (b.idea_votes.length - a.idea_votes.length) || (a.id - b.id); });
+      if (!items.length) {
+        panel.appendChild(el('p', 'empty', 'Ingen idéer endnu.'));
+        acts.appendChild(panel);
+        return;
+      }
+      var ul = el('ul', 'idea-list');
+      items.forEach(function (idea) {
+        var voters = idea.idea_votes.map(function (v) { return v.voter; });
+        var voted = !!name && voters.indexOf(name) !== -1;
+        var li = el('li', 'idea');
+        var t = el('span', 'title');
+        if (idea.url) {
+          var a = el('a', null, idea.title);
+          a.href = idea.url; a.target = '_blank'; a.rel = 'noopener';
+          t.appendChild(a);
+        } else {
+          t.appendChild(document.createTextNode(idea.title));
+        }
+        var meta = [];
+        if (idea.added_by) meta.push('Foreslået af ' + idea.added_by);
+        if (voters.length) meta.push('Stemmer: ' + voters.join(', '));
+        if (meta.length) t.appendChild(el('span', 'by', meta.join(' · ')));
+        li.appendChild(t);
+        var btn = el('button', 'vote', voters.length + (voters.length === 1 ? ' stemme' : ' stemmer'));
+        btn.type = 'button';
+        btn.setAttribute('aria-pressed', voted ? 'true' : 'false');
+        btn.setAttribute('aria-label', (voted ? 'Fjern din stemme fra ' : 'Stem på ') + idea.title);
+        btn.addEventListener('click', function () {
+          var n = requireName();
+          if (!n) return;
+          if (voted) {
+            act(btn, api('idea_votes?idea_id=eq.' + idea.id + '&voter=eq.' + encodeURIComponent(n), { method: 'DELETE' }));
+          } else {
+            act(btn, api('idea_votes', { method: 'POST', body: { idea_id: idea.id, voter: n } }).catch(function (e) {
+              if (e.status === 409) return null;
+              throw e;
+            }));
+          }
+        });
+        li.appendChild(btn);
+        ul.appendChild(li);
+      });
+      panel.appendChild(ul);
+      acts.appendChild(panel);
+    });
+  }
+
+  $('idea-form').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var name = requireName();
+    if (!name) return;
+    var title = $('idea-title').value.trim();
+    if (title.length < 2) { $('idea-title').focus(); return; }
+    var btn = $('idea-submit');
+    act(btn, api('ideas', { method: 'POST', body: { category: $('idea-cat').value, title: title, added_by: name } })
+      .then(function () { $('idea-title').value = ''; btn.disabled = false; }));
+  });
+
+  function renderAll() {
+    renderCooks();
+    renderSpots();
+    renderIdeas();
+  }
+
+  renderAll();
+  load();
+  setInterval(function () {
+    if (document.visibilityState === 'visible' && openForm === null) load();
+  }, 30000);
+  document.addEventListener('visibilitychange', function () {
+    if (document.visibilityState === 'visible' && openForm === null) load();
+  });
+})();
+</script>
+</body>
+</html>
