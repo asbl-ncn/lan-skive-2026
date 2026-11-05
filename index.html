@@ -54,6 +54,7 @@
 [data-acc="gold"] { --acc: var(--gold); }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 html { scroll-behavior: smooth; scroll-padding-top: 76px; }
 body {
   margin: 0;
@@ -575,6 +576,74 @@ input[type="text"]:focus, select:focus { outline: none; border-color: var(--acc)
 .add-idea { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 16px 18px; }
 .add-idea input { flex: 1 1 240px; }
 
+/* Lykkehjul */
+.wheel-box { display: grid; grid-template-columns: minmax(0, 320px) minmax(0, 1fr); gap: 24px 28px; align-items: center; padding: 22px; }
+.wheel-stage { position: relative; width: 100%; aspect-ratio: 1; margin-top: 12px; }
+.wheel {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+  transform: rotate(0deg);
+  transition: transform 5.4s cubic-bezier(0.17, 0.67, 0.12, 1);
+  filter: drop-shadow(0 6px 0 var(--ink-deep));
+}
+.wheel.instant { transition: none; }
+.wheel .seg { stroke: var(--ink-deep); stroke-width: 2; }
+.wheel .rim { fill: none; stroke: var(--ink-deep); stroke-width: 6; }
+.wheel .peg { fill: var(--gold); stroke: var(--ink-deep); stroke-width: 1.5; }
+.wheel text { font: 700 11px var(--f-body); fill: var(--on-acc); }
+.wheel text.small { font-size: 9px; }
+.wheel .wheel-empty { fill: var(--ink-0); stroke: var(--line); stroke-width: 3; stroke-dasharray: 8 6; }
+.wheel .wheel-empty-t { fill: var(--muted); font-size: 13px; }
+.wheel-pointer {
+  position: absolute;
+  top: -16px;
+  left: 50%;
+  z-index: 3;
+  width: 30px;
+  height: 40px;
+  margin-left: -15px;
+  overflow: visible;
+  transform-origin: 50% 15%;
+  filter: drop-shadow(0 3px 0 var(--ink-deep));
+}
+.wheel-pointer path { fill: var(--text); stroke: var(--ink-deep); stroke-width: 2.5; stroke-linejoin: round; }
+.wheel-pointer.tick { animation: tick 0.14s ease-out; }
+@keyframes tick { 40% { transform: rotate(-16deg); } }
+.wheel-hub {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  z-index: 2;
+  width: 72px;
+  height: 72px;
+  margin: -36px 0 0 -36px;
+  border-radius: 50%;
+  background: var(--ink-deep);
+  color: var(--gold);
+  border: 3px solid var(--gold);
+  font: 400 1rem var(--f-display);
+  cursor: pointer;
+  box-shadow: 0 4px 0 oklch(0.45 0.1 70);
+  transition: transform 0.15s var(--ease-out);
+}
+.wheel-hub:hover { transform: scale(1.07) rotate(-6deg); }
+.wheel-hub:active { transform: scale(0.94); }
+.wheel-hub[disabled] { cursor: progress; opacity: 0.75; transform: none; }
+.wheel-side { display: grid; gap: 12px; justify-items: start; align-content: center; min-width: 0; }
+.wheel-side .wh { margin: 0; font: 400 1.4rem var(--f-display); text-transform: uppercase; }
+.wheel-controls { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; }
+.toggle { display: inline-flex; gap: 8px; align-items: center; font-weight: 600; cursor: pointer; }
+.toggle input { accent-color: var(--grape); width: 18px; height: 18px; margin: 0; }
+.btn.big { font-size: 1rem; padding: 9px 20px; }
+.wheel-result { display: grid; gap: 2px; justify-self: stretch; padding: 14px 16px; border-radius: 12px; background: color-mix(in srgb, var(--grape) 16%, var(--ink-0)); border: 2px solid var(--grape); }
+.wheel-result.show { animation: toast-in 0.5s var(--ease-out); }
+.wheel-result .k { font: 700 0.7rem var(--f-pixel); letter-spacing: 0.06em; text-transform: uppercase; color: var(--grape); }
+.wheel-result strong { font: 400 1.25rem/1.25 var(--f-display); text-transform: uppercase; overflow-wrap: anywhere; }
+.wheel-result .m { color: var(--muted); font-size: 0.85rem; }
+.tag.won { background: var(--grape); color: var(--on-acc); }
+
 /* ---------- Økonomi ---------- */
 .money { margin: 0; }
 .money-row { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 4px 16px; padding: 14px 20px; border-top: 2px dashed var(--line); }
@@ -666,6 +735,10 @@ body.party .stk .em { animation: whirl 0.9s linear infinite; }
   .mini-xp { display: none; }
   .wanted { flex-direction: column; gap: 8px; }
 }
+@media (max-width: 640px) {
+  .wheel-box { grid-template-columns: 1fr; padding: 18px 16px; }
+  .wheel-stage { max-width: 300px; justify-self: center; }
+}
 @media (prefers-reduced-motion: reduce) {
   html { scroll-behavior: auto; }
   *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
@@ -731,7 +804,7 @@ body.party .stk .em { animation: whirl 0.9s linear infinite; }
         <p class="xp-rules">Pak en ting <b>+10</b> · stem <b>+20</b> · ny idé <b>+40</b> · soveplads <b>+75</b> · tag en aften <b>+100</b></p>
       </div>
       <div class="ach">
-        <h3>Achievements <span id="ach-count">0/8</span></h3>
+        <h3>Achievements <span id="ach-count">0/9</span></h3>
         <ul class="badges" id="badges"></ul>
       </div>
       <div class="sync" id="sync" role="status"><span id="sync-text">Henter fælles data…</span><button class="linkbtn" id="sync-retry" type="button" hidden>Prøv igen</button></div>
@@ -854,6 +927,30 @@ body.party .stk .em { animation: whirl 0.9s linear infinite; }
       <div class="sec-head">
         <h2 id="h-akt"><span class="hico" aria-hidden="true">🎮</span>Aktiviteter</h2>
         <p class="lead">Idéer til hvad vi kan lave. Vi er fem, så vi er præcis et fuldt M+-hold. Stem på det, du helst vil, eller tilføj din egen idé.</p>
+      </div>
+      <div class="panel wheel-box" id="wheel-box">
+        <div class="wheel-stage">
+          <svg class="wheel-pointer" id="wheel-pointer" viewBox="0 0 30 40" aria-hidden="true"><path d="M15 38 L3 6 Q15 -2 27 6 Z"/></svg>
+          <svg class="wheel" id="wheel" viewBox="-150 -150 300 300" role="img" aria-label="Lykkehjul med aktiviteterne"></svg>
+          <button class="wheel-hub" id="wheel-spin" type="button" aria-label="Snur lykkehjulet">Spin</button>
+        </div>
+        <div class="wheel-side">
+          <h3 class="wh">Lykkehjulet</h3>
+          <p class="note">Kan I ikke blive enige? Lad hjulet bestemme. Idéer med flere stemmer fylder mere på hjulet.</p>
+          <div class="wheel-controls">
+            <label class="sr-only" for="wheel-cat">Kategori på hjulet</label>
+            <select id="wheel-cat">
+              <option value="">Alle kategorier</option>
+              <option>Gaming</option>
+              <option>Andre aktiviteter</option>
+              <option>Udenfor</option>
+              <option>Ud af huset</option>
+            </select>
+            <label class="toggle"><input type="checkbox" id="wheel-weight" checked>Vægt efter stemmer</label>
+          </div>
+          <button class="btn big" id="wheel-spin2" type="button">Snur hjulet</button>
+          <div class="wheel-result" id="wheel-result" aria-live="polite" hidden></div>
+        </div>
       </div>
       <ul class="legend" aria-label="Sjældenhed efter antal stemmer">
         <li>Sjældenhed</li>
@@ -984,6 +1081,7 @@ body.party .stk .em { animation: whirl 0.9s linear infinite; }
       var dx = Math.cos(ang) * dist;
       var dy = Math.sin(ang) * dist - (o.lift || 24);
       var rot = (Math.random() * 2 - 1) * 540;
+      setTimeout(function () { p.remove(); }, 1600);
       p.animate([
         { transform: 'translate(-50%, -50%) scale(.4)', opacity: 1 },
         { transform: 'translate(calc(-50% + ' + dx + 'px), calc(-50% + ' + dy + 'px)) rotate(' + (rot / 2) + 'deg) scale(1)', opacity: 1, offset: 0.55 },
@@ -999,6 +1097,7 @@ body.party .stk .em { animation: whirl 0.9s linear infinite; }
     f.style.top = y + 'px';
     if (color) f.style.color = color;
     document.body.appendChild(f);
+    setTimeout(function () { f.remove(); }, 1500);
     f.animate([
       { transform: 'translate(-50%, 0) scale(.7)', opacity: 0 },
       { transform: 'translate(-50%, -16px) scale(1.05)', opacity: 1, offset: 0.25 },
@@ -1040,6 +1139,7 @@ body.party .stk .em { animation: whirl 0.9s linear infinite; }
       r.style.fontSize = (18 + Math.random() * 24) + 'px';
       document.body.appendChild(r);
       var spin = (Math.random() * 2 - 1) * 720;
+      setTimeout(function () { r.remove(); }, 7000);
       r.animate([
         { transform: 'translateY(-12vh) rotate(0deg)' },
         { transform: 'translateY(112vh) rotate(' + spin + 'deg)' }
@@ -1361,6 +1461,7 @@ body.party .stk .em { animation: whirl 0.9s linear infinite; }
     { id: 'ide', scope: 'me', ico: '💡', name: 'Idémager', desc: 'Foreslå en ny aktivitet.' },
     { id: 'hold', scope: 'team', ico: '👥', name: 'Fuldt hold', desc: 'Alle fem sovepladser er taget.' },
     { id: 'mad', scope: 'team', ico: '🔥', name: 'Ingen sulter', desc: 'Alle tre aftener har en kok.' },
+    { id: 'hjul', scope: 'device', ico: '🎡', name: 'Lykkehjulet', desc: 'Snur lykkehjulet.' },
     { id: 'kode', scope: 'device', ico: '🕹️', name: 'Snydekoden', desc: 'Du fandt den hemmelige kode.', secret: true }
   ];
   var ACH_KEY = 'lan-skive-2026-ach';
@@ -1417,6 +1518,7 @@ body.party .stk .em { animation: whirl 0.9s linear infinite; }
       ide: s.ideas > 0,
       hold: !!(state.spots && state.spots.length && state.spots.every(function (sp) { return sp.person_name; })),
       mad: !!(state.cooks && state.cooks.length && state.cooks.every(function (c) { return c.cook_name; })),
+      hjul: wheelSpun,
       kode: secretFound
     };
     return s;
@@ -1720,6 +1822,7 @@ body.party .stk .em { animation: whirl 0.9s linear infinite; }
           crown.setAttribute('aria-label', 'fører i kategorien');
           t.appendChild(crown);
         }
+        if (idea.id === wheelWon) t.appendChild(el('span', 'tag won', 'Hjulets valg'));
         var meta = [];
         if (idea.added_by) meta.push('Foreslået af ' + idea.added_by);
         if (voters.length) meta.push('Stemmer: ' + voters.join(', '));
@@ -1772,10 +1875,166 @@ body.party .stk .em { animation: whirl 0.9s linear infinite; }
       });
   });
 
+  // ---------- Lykkehjul ----------
+  var WHEEL_KEY = 'lan-skive-2026-hjul';
+  var wheelSpun = store(WHEEL_KEY) === '1';
+  var wheel = $('wheel'), pointer = $('wheel-pointer');
+  var WHEEL_COLORS = ['var(--lava)', 'var(--lime)', 'var(--grape)', 'var(--sky)', 'var(--gold)'];
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  var WR = 145;
+  var wheelRot = 0, spinning = false, wheelSegs = [], wheelSig = null, wheelWon = null, pending = null, lastSeg = -1, spinTimer = null, spinBtn = null;
+
+  function svgEl(tag, attrs) {
+    var e = document.createElementNS(SVGNS, tag);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+  function polar(a, r) {
+    var t = a * Math.PI / 180;
+    return (r * Math.sin(t)).toFixed(2) + ' ' + (-r * Math.cos(t)).toFixed(2);
+  }
+  function short(t, max) {
+    t = String(t);
+    return t.length > max ? t.slice(0, max - 1).trim() + '…' : t;
+  }
+  function wheelItems() {
+    var cat = $('wheel-cat').value, weighted = $('wheel-weight').checked;
+    return (state.ideas || []).filter(function (i) { return !cat || i.category === cat; }).map(function (i) {
+      var v = i.idea_votes.length;
+      return { id: i.id, title: i.title, cat: i.category, votes: v, w: weighted ? v + 1 : 1 };
+    });
+  }
+
+  function renderWheel(force) {
+    if (spinning) return;
+    var items = wheelItems();
+    var sig = (state.ideas ? 'd' : 'x') + items.map(function (i) { return i.id + ':' + i.w + ':' + i.title; }).join('|');
+    if (!force && sig === wheelSig) return;
+    wheelSig = sig;
+    wheel.textContent = '';
+    wheelSegs = [];
+    var none = !items.length;
+    $('wheel-spin').disabled = none;
+    $('wheel-spin2').disabled = none;
+    if (none) {
+      wheel.appendChild(svgEl('circle', { r: WR, 'class': 'wheel-empty' }));
+      var msg = svgEl('text', { 'text-anchor': 'middle', y: -56, 'class': 'wheel-empty-t' });
+      msg.textContent = state.ideas ? 'Ingen idéer her' : 'Henter…';
+      wheel.appendChild(msg);
+      return;
+    }
+    var total = items.reduce(function (s, i) { return s + i.w; }, 0);
+    var a = 0;
+    items.forEach(function (it, idx) {
+      var span = it.w / total * 360, a0 = a, a1 = a + span;
+      a = a1;
+      wheelSegs.push({ it: it, a0: a0, a1: a1 });
+      var color = WHEEL_COLORS[idx % WHEEL_COLORS.length];
+      if (items.length > 1 && idx === items.length - 1 && idx % WHEEL_COLORS.length === 0) color = WHEEL_COLORS[2];
+      var shape = items.length === 1
+        ? svgEl('circle', { r: WR })
+        : svgEl('path', { d: 'M0 0 L' + polar(a0, WR) + ' A' + WR + ' ' + WR + ' 0 ' + (span > 180 ? 1 : 0) + ' 1 ' + polar(a1, WR) + ' Z' });
+      shape.setAttribute('class', 'seg');
+      shape.style.fill = color;
+      wheel.appendChild(shape);
+      var small = span < 8;
+      var label = svgEl('text', { x: WR - 12, dy: '0.35em', 'text-anchor': 'end', transform: 'rotate(' + ((a0 + a1) / 2 - 90).toFixed(2) + ')' });
+      if (small) label.setAttribute('class', 'small');
+      label.textContent = short(it.title, small ? 17 : 15);
+      wheel.appendChild(label);
+    });
+    wheel.appendChild(svgEl('circle', { r: WR, 'class': 'rim' }));
+    wheelSegs.forEach(function (s) {
+      var p = polar(s.a0, WR - 7).split(' ');
+      wheel.appendChild(svgEl('circle', { cx: p[0], cy: p[1], r: 3.2, 'class': 'peg' }));
+    });
+  }
+
+  function segAt(a) {
+    for (var i = 0; i < wheelSegs.length; i++) if (a >= wheelSegs[i].a0 && a < wheelSegs[i].a1) return i;
+    return wheelSegs.length - 1;
+  }
+  function setSpinUI(on) {
+    ['wheel-spin', 'wheel-spin2', 'wheel-cat', 'wheel-weight'].forEach(function (id) { $(id).disabled = on; });
+  }
+  function tickLoop() {
+    if (!spinning) return;
+    var m = getComputedStyle(wheel).transform;
+    var v = m && m.match(/matrix\(([^)]+)\)/);
+    if (v) {
+      var p = v[1].split(',').map(parseFloat);
+      var ang = Math.atan2(p[1], p[0]) * 180 / Math.PI;
+      var idx = segAt((((-ang) % 360) + 360) % 360);
+      if (idx !== lastSeg) { lastSeg = idx; restart(pointer, 'tick'); }
+    }
+    requestAnimationFrame(tickLoop);
+  }
+
+  function spinWheel(ev) {
+    if (spinning) return;
+    spinBtn = ev && ev.currentTarget;
+    renderWheel();
+    if (!wheelSegs.length) return;
+    // Vinderen trækkes efter vinkel, så sandsynligheden følger feltets størrelse (stemmer + 1).
+    var win = wheelSegs[segAt(Math.random() * 360)];
+    var target = win.a0 + (win.a1 - win.a0) * (0.15 + Math.random() * 0.7);
+    var delta = (((-target - wheelRot) % 360) + 360) % 360;
+    wheelRot += 360 * (5 + Math.floor(Math.random() * 3)) + delta;
+    pending = win;
+    spinning = true;
+    setSpinUI(true);
+    $('wheel-result').hidden = true;
+    if (calm()) {
+      wheel.classList.add('instant');
+      wheel.style.transform = 'rotate(' + wheelRot + 'deg)';
+      void wheel.offsetWidth;
+      wheel.classList.remove('instant');
+      finishSpin();
+      return;
+    }
+    wheel.style.transform = 'rotate(' + wheelRot + 'deg)';
+    lastSeg = -1;
+    requestAnimationFrame(tickLoop);
+    clearTimeout(spinTimer);
+    spinTimer = setTimeout(finishSpin, 6000);
+  }
+
+  function finishSpin() {
+    if (!spinning || !pending) return;
+    spinning = false;
+    clearTimeout(spinTimer);
+    setSpinUI(false);
+    // Knappen mistede fokus, da den blev deaktiveret; giv det tilbage til tastaturbrugere.
+    if (spinBtn && (!document.activeElement || document.activeElement === document.body)) spinBtn.focus({ preventScroll: true });
+    var it = pending.it;
+    pending = null;
+    wheelWon = it.id;
+    var res = $('wheel-result');
+    res.textContent = '';
+    res.appendChild(el('span', 'k', 'Hjulet har talt'));
+    res.appendChild(el('strong', null, it.title));
+    res.appendChild(el('span', 'm', it.cat + ' · ' + it.votes + (it.votes === 1 ? ' stemme' : ' stemmer')));
+    res.hidden = false;
+    restart(res, 'show');
+    toast('🎡', 'Hjulet har talt!', it.title, 'grape');
+    confetti();
+    if (!wheelSpun) { wheelSpun = true; store(WHEEL_KEY, '1'); }
+    renderIdeas();
+    renderWheel();
+    evalAch();
+  }
+
+  wheel.addEventListener('transitionend', function (e) { if (e.propertyName === 'transform') finishSpin(); });
+  $('wheel-spin').addEventListener('click', spinWheel);
+  $('wheel-spin2').addEventListener('click', spinWheel);
+  $('wheel-cat').addEventListener('change', function () { renderWheel(true); });
+  $('wheel-weight').addEventListener('change', function () { renderWheel(true); });
+
   function renderAll() {
     renderCooks();
     renderSpots();
     renderIdeas();
+    renderWheel();
   }
 
   // ---------- Afslør sektioner ved scroll ----------
