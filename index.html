@@ -4,141 +4,320 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="robots" content="noindex, nofollow">
+<meta name="theme-color" content="#120f20">
 <title>LAN hos Larsen i Skive</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=Figtree:wght@400;500;600;700&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bungee&family=Figtree:wght@400;500;600;700;800&family=Silkscreen:wght@400;700&display=swap">
 <style>
-/* Layout: én kolonne på max 780px; mørk "billet"-top med de praktiske fakta, derefter sektioner i den rækkefølge man planlægger i */
+/* Retning: en sticker-bombet LAN-aften. Mørk violet base, fem accentfarver (én pr. sektion),
+   hårde skygger som klistermærker, XP, levels, achievements og sjældenhedsfarver på idéer. */
 :root {
-  --bg: #EDF0F3;
-  --surface: #FFFFFF;
-  --ink: #13202A;
-  --muted: #5A6A76;
-  --line: #D2D9DF;
-  --accent: #C2410C;
-  --accent-soft: #FCE7DA;
-  --on-accent: #FFFFFF;
-  --hero-bg: #13202A;
-  --hero-ink: #F1F4F6;
-  --hero-muted: #A7B4BE;
-  --hero-line: #2A3945;
-  --font-display: "Chakra Petch", "Segoe UI", system-ui, sans-serif;
-  --font-body: "Figtree", "Segoe UI", system-ui, -apple-system, sans-serif;
-  --radius: 10px;
-  color-scheme: light;
+  --ink-deep: oklch(0.13 0.03 288);
+  --ink-0: oklch(0.175 0.035 288);
+  --ink-1: oklch(0.22 0.04 288);
+  --ink-2: oklch(0.275 0.045 288);
+  --line: oklch(0.38 0.05 288);
+  --text: oklch(0.96 0.012 288);
+  --muted: oklch(0.78 0.03 288);
+  --on-acc: oklch(0.17 0.04 288);
+  --stk-line: oklch(0.97 0.01 288);
+
+  --lava: oklch(0.76 0.17 52);
+  --lime: oklch(0.89 0.19 128);
+  --grape: oklch(0.73 0.18 305);
+  --sky: oklch(0.81 0.12 225);
+  --gold: oklch(0.87 0.15 88);
+
+  --r-common: oklch(0.82 0.015 288);
+  --r-uncommon: oklch(0.83 0.19 148);
+  --r-rare: oklch(0.74 0.15 245);
+  --r-epic: oklch(0.72 0.2 308);
+  --r-legendary: oklch(0.79 0.17 58);
+
+  --f-display: "Bungee", "Impact", "Arial Black", system-ui, sans-serif;
+  --f-body: "Figtree", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --f-pixel: "Silkscreen", ui-monospace, "Consolas", monospace;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --radius: 14px;
+  --acc: var(--lava);
+  color-scheme: dark;
 }
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #0D141A; --surface: #151F27; --ink: #E5EBEF; --muted: #93A2AD; --line: #25333D;
-    --accent: #FB8C4C; --accent-soft: #3B2214; --on-accent: #1A0F08;
-    --hero-bg: #18242E; --hero-ink: #F1F4F6; --hero-muted: #A0AEB8; --hero-line: #2C3B47;
-    color-scheme: dark;
-  }
+:root, [data-acc] {
+  --acc-deep: color-mix(in srgb, var(--acc) 42%, var(--ink-deep));
+  --acc-soft: color-mix(in srgb, var(--acc) 14%, var(--ink-1));
 }
+[data-acc="lava"] { --acc: var(--lava); }
+[data-acc="lime"] { --acc: var(--lime); }
+[data-acc="grape"] { --acc: var(--grape); }
+[data-acc="sky"] { --acc: var(--sky); }
+[data-acc="gold"] { --acc: var(--gold); }
 
 * { box-sizing: border-box; }
-html { scroll-behavior: smooth; }
+html { scroll-behavior: smooth; scroll-padding-top: 76px; }
 body {
   margin: 0;
-  background: var(--bg);
-  color: var(--ink);
-  font-family: var(--font-body);
-  font-size: 16px;
-  line-height: 1.55;
+  background-color: var(--ink-0);
+  background-image: radial-gradient(oklch(0.9 0.03 288 / 0.07) 1px, transparent 1.6px);
+  background-size: 24px 24px;
+  color: var(--text);
+  font-family: var(--f-body);
+  font-size: 1rem;
+  line-height: 1.65;
   -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
 }
-a { color: var(--accent); text-underline-offset: 3px; }
-a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible {
-  outline: 2px solid var(--accent);
+a { color: var(--acc); text-underline-offset: 3px; }
+a:focus-visible, button:focus-visible, select:focus-visible, input[type="checkbox"]:focus-visible {
+  outline: 3px solid var(--gold);
   outline-offset: 2px;
-  border-radius: 4px;
 }
 .wrap {
-  max-width: 780px;
+  max-width: 880px;
   margin: 0 auto;
   padding-left: max(16px, env(safe-area-inset-left, 0px));
   padding-right: max(16px, env(safe-area-inset-right, 0px));
 }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
 
-/* ---------- Hero / billet ---------- */
-.hero { background: var(--hero-bg); color: var(--hero-ink); padding-top: env(safe-area-inset-top, 0px); }
-.hero .wrap { padding-block: 40px 32px; display: grid; gap: 28px; }
-.eyebrow {
-  font-family: var(--font-display);
-  font-weight: 600;
-  font-size: 0.8rem;
-  letter-spacing: 0.14em;
+/* ---------- Hero ---------- */
+.hero {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  padding-top: env(safe-area-inset-top, 0px);
+  background:
+    radial-gradient(70% 90% at 92% 0%, oklch(0.45 0.2 305 / 0.55), transparent 65%),
+    radial-gradient(60% 80% at 0% 100%, oklch(0.62 0.19 45 / 0.32), transparent 70%),
+    var(--ink-deep);
+}
+.hero-in {
+  position: relative;
+  padding-block: clamp(36px, 7vw, 76px) clamp(30px, 5vw, 52px);
+  display: grid;
+  justify-items: start;
+  gap: clamp(20px, 3.5vw, 30px);
+  pointer-events: none;
+}
+.hero-in > * { pointer-events: auto; }
+.hero-tag { margin: 0; display: flex; flex-wrap: wrap; gap: 8px 12px; align-items: center; font-weight: 700; color: var(--muted); }
+.chip-pix {
+  font: 700 0.72rem var(--f-pixel);
+  letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--hero-muted);
-  display: flex; flex-wrap: wrap; gap: 8px 14px; align-items: center;
-}
-.countdown { color: var(--accent); border: 1px solid currentColor; border-radius: 999px; padding: 2px 10px; letter-spacing: 0.08em; }
-.hero h1 {
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: clamp(2.4rem, 8vw, 3.6rem);
-  line-height: 1;
-  margin: 10px 0 0;
-  text-wrap: balance;
-}
-.dates {
-  font-family: var(--font-display);
-  font-weight: 500;
-  font-size: clamp(1.25rem, 4vw, 1.6rem);
-  margin: 10px 0 0;
-  font-variant-numeric: tabular-nums;
-}
-.dates span { color: var(--hero-muted); }
-.facts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); border-top: 1px dashed var(--hero-line); margin: 0; }
-.fact { padding: 16px 16px 16px 0; border-bottom: 1px dashed var(--hero-line); min-width: 0; }
-.fact:nth-child(even) { padding-left: 16px; border-left: 1px dashed var(--hero-line); }
-.fact dt { font-family: var(--font-display); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.12em; text-transform: uppercase; color: var(--hero-muted); }
-.fact dd { margin: 4px 0 0; font-weight: 500; }
-
-/* ---------- Nav ---------- */
-.nav { border-bottom: 1px solid var(--line); background: var(--surface); }
-.nav .wrap { padding-block: 10px; display: flex; flex-wrap: wrap; gap: 4px 18px; }
-.nav a { font-family: var(--font-display); font-weight: 600; font-size: 0.85rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); text-decoration: none; padding: 4px 0; }
-.nav a:hover { color: var(--accent); }
-
-/* ---------- Kontroller ---------- */
-input[type="text"], select {
-  font: inherit;
-  font-size: 0.95rem;
-  color: var(--ink);
-  background: var(--surface);
-  border: 1px solid var(--line);
+  color: var(--on-acc);
+  background: var(--lime);
+  padding: 4px 8px 3px;
   border-radius: 6px;
-  padding: 7px 10px;
+  box-shadow: 0 3px 0 color-mix(in srgb, var(--lime) 40%, var(--ink-deep));
+}
+h1 {
+  margin: 0;
+  font: 400 clamp(2.5rem, 10.5vw, 5rem)/0.95 var(--f-display);
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+  text-shadow: 0.035em 0.035em 0 var(--grape), 0.07em 0.07em 0 var(--ink-0);
+  cursor: default;
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-tap-highlight-color: transparent;
+}
+h1 .word { display: inline-block; white-space: nowrap; }
+h1 .word:last-child { display: block; font-size: 1.32em; color: var(--lava); }
+h1 .ch { display: inline-block; transition: transform 0.35s var(--ease-out), color 0.25s; }
+h1.enter .ch { animation: drop 0.8s var(--ease-out) backwards; animation-delay: calc(var(--i) * 45ms + 120ms); }
+@keyframes drop { from { transform: translateY(-0.6em) rotate(-12deg) scale(0.85); opacity: 0; } }
+@media (hover: hover) { h1 .ch:hover { transform: translateY(-0.1em) rotate(-6deg); color: var(--gold); } }
+
+.dates { margin: 0; font-weight: 700; font-size: clamp(1.05rem, 3.2vw, 1.35rem); }
+.dates span { color: var(--lava); }
+
+.timer { display: grid; gap: 10px; }
+.timer-label { margin: 0; font: 700 0.78rem var(--f-pixel); letter-spacing: 0.08em; text-transform: uppercase; color: var(--gold); }
+.timer-cells { display: grid; grid-template-columns: repeat(4, 76px); gap: 10px; }
+.cell {
+  background: var(--ink-1);
+  border: 2px solid var(--line);
+  border-radius: 12px;
+  padding: 8px 4px 6px;
+  text-align: center;
+  box-shadow: 0 5px 0 var(--ink-0);
+  overflow: hidden;
+}
+.cell b { display: block; font: 700 clamp(1.5rem, 6vw, 2.1rem)/1.1 var(--f-pixel); font-variant-numeric: tabular-nums; }
+.cell span { font-weight: 700; font-size: 0.72rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+.timer-live { margin: 0; font: 400 clamp(1.4rem, 5vw, 2rem) var(--f-display); text-transform: uppercase; color: var(--lime); }
+.timer-live.on { animation: glow 1.6s ease-in-out infinite alternate; }
+@keyframes glow { to { text-shadow: 0 0 18px color-mix(in srgb, var(--lime) 70%, transparent); } }
+
+.facts { justify-self: stretch; margin: 0; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+.fact {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 12px;
+  align-items: center;
+  padding: 12px 14px;
+  background: oklch(0.2 0.04 288 / 0.72);
+  border: 2px dashed var(--line);
+  border-radius: 12px;
   min-width: 0;
 }
-input[type="text"]::placeholder { color: var(--muted); }
+.fact::before { content: attr(data-ico); content: attr(data-ico) / ""; grid-row: span 2; font-size: 1.5rem; line-height: 1; }
+.fact dt { font: 700 0.68rem var(--f-pixel); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.fact dd { margin: 2px 0 0; font-weight: 600; }
+
+/* Klistermærker i hero */
+.stickers { position: absolute; inset: 0; z-index: -1; pointer-events: none; --px: 0; --py: 0; }
+.stk {
+  position: absolute;
+  left: var(--x);
+  top: var(--y);
+  margin-left: -0.5em;
+  font-size: var(--s);
+  line-height: 1;
+  pointer-events: auto;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  transform: translate(calc(var(--px) * var(--d) * 1px), calc(var(--py) * var(--d) * 1px));
+  transition: transform 0.9s var(--ease-out);
+}
+.stk .bob { display: block; animation: bob var(--dur) ease-in-out var(--del) infinite alternate; }
+.stk .em {
+  display: block;
+  transform: rotate(var(--r));
+  filter:
+    drop-shadow(2px 0 0 var(--stk-line)) drop-shadow(-2px 0 0 var(--stk-line))
+    drop-shadow(0 2px 0 var(--stk-line)) drop-shadow(0 -2px 0 var(--stk-line))
+    drop-shadow(4px 6px 0 oklch(0.08 0.03 288 / 0.55));
+  transition: transform 0.5s var(--ease-out);
+}
+@media (hover: hover) { .stk:hover .em { transform: rotate(calc(var(--r) * -1)) scale(1.12); } }
+.stk.pop .em { animation: pop 0.7s var(--ease-out); }
+@keyframes bob { to { transform: translateY(-14px) rotate(7deg); } }
+@keyframes pop { 0% { transform: rotate(var(--r)) scale(1); } 35% { transform: rotate(200deg) scale(1.4); } 100% { transform: rotate(calc(var(--r) + 360deg)) scale(1); } }
+
+/* ---------- HUD-bar ---------- */
+.hud { position: sticky; top: 0; z-index: 50; background: oklch(0.14 0.035 288 / 0.96); border-bottom: 2px solid var(--line); }
+.hud .wrap { display: flex; align-items: center; gap: 8px; padding-block: 8px; }
+.hud-links { display: flex; gap: 2px; flex: 1; min-width: 0; overflow-x: auto; scrollbar-width: none; }
+.hud-links::-webkit-scrollbar { display: none; }
+.hud-links a {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 10px;
+  border-radius: 10px;
+  color: var(--muted);
+  font-weight: 700;
+  font-size: 0.86rem;
+  text-decoration: none;
+  transition: background 0.2s, color 0.2s, transform 0.2s var(--ease-out);
+}
+.hud-links a:hover { color: var(--text); background: var(--ink-1); }
+.hud-links a[aria-current="true"] { color: var(--on-acc); background: var(--acc); }
+.hud-links .e { font-size: 1.05rem; line-height: 1; }
+.hud-links kbd { font: 700 0.6rem var(--f-pixel); color: inherit; opacity: 0.7; border: 1px solid currentColor; border-radius: 4px; padding: 1px 4px 0; }
+.me-chip {
+  flex: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 3px 10px 3px 3px;
+  border-radius: 999px;
+  background: var(--ink-1);
+  border: 2px solid var(--line);
+  color: var(--text);
+  text-decoration: none;
+}
+.me-chip:hover { border-color: var(--lime); }
+.me-chip .avatar { width: 28px; height: 28px; font-size: 0.68rem; border-radius: 50%; box-shadow: none; border-width: 1.5px; }
+.lvl-s { font: 700 0.66rem var(--f-pixel); color: var(--lime); white-space: nowrap; }
+.mini-xp { width: 44px; height: 6px; border-radius: 99px; background: var(--ink-0); overflow: hidden; }
+.mini-xp i { display: block; height: 100%; background: var(--lime); transform-origin: left; transform: scaleX(0); transition: transform 0.7s var(--ease-out); }
+
+/* ---------- Fælles ---------- */
+main .wrap { padding-block: 28px 56px; display: grid; gap: clamp(52px, 8vw, 76px); }
+section { display: grid; gap: 18px; min-width: 0; scroll-margin-top: 76px; }
+.sec-head { display: grid; gap: 10px; }
+h2 {
+  margin: 0;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  font: 400 clamp(1.7rem, 5.5vw, 2.5rem)/1.05 var(--f-display);
+  text-transform: uppercase;
+}
+.hico {
+  flex: none;
+  display: inline-grid;
+  place-items: center;
+  width: 1.55em;
+  height: 1.55em;
+  font-size: 0.85em;
+  line-height: 1;
+  border-radius: 14px;
+  background: var(--acc);
+  border: 2px solid var(--ink-deep);
+  box-shadow: 0 4px 0 var(--acc-deep);
+  transform: rotate(-6deg);
+  transition: transform 0.5s var(--ease-out);
+}
+@media (hover: hover) { section:hover .hico { transform: rotate(6deg) scale(1.06); } }
+.spin { display: inline-block; animation: coin 3.2s linear infinite; }
+@keyframes coin { 0%, 70% { transform: rotateY(0); } 100% { transform: rotateY(360deg); } }
+.lead { margin: 0; color: var(--muted); max-width: 62ch; }
+h3 { margin: 0; font: 700 0.8rem var(--f-pixel); letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.panel { background: var(--ink-1); border: 2px solid var(--line); border-radius: var(--radius); box-shadow: 6px 6px 0 var(--acc-deep); }
+.note { color: var(--muted); font-size: 0.9rem; margin: 0; }
+.callout { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; padding: 14px 18px; background: var(--acc-soft); border: 2px solid color-mix(in srgb, var(--acc) 45%, transparent); border-radius: var(--radius); }
+.callout strong { font: 700 0.75rem var(--f-pixel); letter-spacing: 0.06em; text-transform: uppercase; color: var(--acc); }
+.empty { color: var(--muted); font-style: italic; margin: 0; }
+
+input[type="text"], select {
+  font: inherit;
+  font-size: 1rem;
+  color: var(--text);
+  background: var(--ink-0);
+  border: 2px solid var(--line);
+  border-radius: 10px;
+  padding: 8px 12px;
+  min-width: 0;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+input[type="text"]::placeholder { color: var(--muted); opacity: 0.8; }
+input[type="text"]:focus, select:focus { outline: none; border-color: var(--acc); box-shadow: 0 0 0 4px color-mix(in srgb, var(--acc) 28%, transparent); }
+
 .btn {
-  font: 600 0.88rem var(--font-body);
-  color: var(--on-accent);
-  background: var(--accent);
-  border: 1px solid var(--accent);
-  border-radius: 6px;
-  padding: 6px 12px;
+  font: 800 0.9rem var(--f-body);
+  color: var(--on-acc);
+  background: var(--acc);
+  border: 2px solid var(--ink-deep);
+  border-radius: 10px;
+  padding: 6px 14px;
   cursor: pointer;
   white-space: nowrap;
+  box-shadow: 0 4px 0 var(--acc-deep);
+  transition: transform 0.12s var(--ease-out), box-shadow 0.12s var(--ease-out), filter 0.2s;
 }
-.btn:hover { filter: brightness(1.08); }
-.btn[disabled], .ghost[disabled], .vote[disabled] { opacity: 0.55; cursor: progress; }
+.btn:hover { filter: brightness(1.08); transform: translateY(-1px); box-shadow: 0 5px 0 var(--acc-deep); }
+.btn:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--acc-deep); }
 .ghost {
-  font: 600 0.85rem var(--font-body);
+  font: 700 0.85rem var(--f-body);
   color: var(--muted);
   background: transparent;
-  border: 1px solid var(--line);
-  border-radius: 6px;
+  border: 2px solid var(--line);
+  border-radius: 10px;
   padding: 6px 12px;
   cursor: pointer;
   white-space: nowrap;
+  box-shadow: 0 3px 0 var(--ink-deep);
+  transition: transform 0.12s var(--ease-out), box-shadow 0.12s, color 0.2s, border-color 0.2s;
 }
-.ghost:hover { color: var(--ink); border-color: var(--muted); }
+.ghost:hover { color: var(--text); border-color: var(--muted); }
+.ghost:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink-deep); }
 .linkbtn {
-  font: 500 0.82rem var(--font-body);
+  font: 600 0.82rem var(--f-body);
   color: var(--muted);
   background: none;
   border: 0;
@@ -147,246 +326,499 @@ input[type="text"]::placeholder { color: var(--muted); }
   text-underline-offset: 3px;
   cursor: pointer;
 }
-.linkbtn:hover { color: var(--accent); }
+.linkbtn:hover { color: var(--acc); }
+.btn[disabled], .ghost[disabled], .vote[disabled] { opacity: 0.55; cursor: progress; transform: none; }
 
-/* ---------- Sektioner ---------- */
-main .wrap { padding-block: 24px 48px; display: grid; gap: 52px; }
-section { display: grid; gap: 18px; scroll-margin-top: 16px; min-width: 0; }
-.sec-head { display: grid; gap: 6px; }
-h2 { font-family: var(--font-display); font-weight: 700; font-size: 1.6rem; line-height: 1.15; margin: 0; text-wrap: balance; }
-.lead { margin: 0; color: var(--muted); max-width: 62ch; }
-h3 { font-family: var(--font-display); font-weight: 600; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--muted); margin: 0; }
-.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); }
-.note { color: var(--muted); font-size: 0.9rem; margin: 0; }
-.callout { display: flex; flex-wrap: wrap; gap: 4px 12px; align-items: baseline; padding: 14px 18px; background: var(--accent-soft); border-radius: var(--radius); }
-.callout strong { font-family: var(--font-display); letter-spacing: 0.04em; }
-.flag {
-  font-family: var(--font-display); font-size: 0.7rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase;
-  color: var(--accent); background: var(--accent-soft); border-radius: 4px; padding: 1px 6px; margin-left: 4px; white-space: nowrap;
+.avatar {
+  --h: 40;
+  display: inline-grid;
+  place-items: center;
+  flex: none;
+  border-radius: 14px;
+  background: oklch(0.8 0.14 var(--h));
+  color: var(--on-acc);
+  font: 400 1rem/1 var(--f-display);
+  border: 2px solid var(--ink-deep);
+  box-shadow: 0 3px 0 var(--ink-deep);
 }
+.avatar.empty { background: var(--ink-0); color: var(--muted); border: 2px dashed var(--line); box-shadow: none; }
+.avatar.xs { width: 20px; height: 20px; font-size: 0.55rem; border-radius: 6px; border-width: 1.5px; box-shadow: none; }
 
-/* Hvem er du */
-.whoami { display: grid; gap: 10px; padding: 16px 20px; }
-.whoami-row { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
-.whoami label { font-weight: 600; }
-.whoami input { flex: 1 1 200px; max-width: 280px; }
+/* ---------- Spillerkort ---------- */
+.player { padding: clamp(16px, 3vw, 24px); display: grid; gap: 20px; }
+.player.shake { animation: shake 0.45s var(--ease-out); }
+@keyframes shake { 20% { transform: translateX(-7px); } 40% { transform: translateX(6px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(2px); } }
+.player-top { display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.avatar.big { width: 64px; height: 64px; font-size: 1.35rem; border-radius: 18px; transform: rotate(-4deg); }
+.player-id { display: grid; gap: 6px; flex: 1 1 220px; min-width: 0; }
+.player-id label { font: 400 1.15rem var(--f-display); text-transform: uppercase; }
+.player-id input { max-width: 320px; width: 100%; }
+.hint { color: var(--lava); font-size: 0.88rem; font-weight: 600; margin: 0; }
+.level { display: grid; gap: 8px; }
+.level-row { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; }
+.lvl { font: 700 0.95rem var(--f-pixel); color: var(--on-acc); background: var(--lime); padding: 3px 8px 1px; border-radius: 6px; box-shadow: 0 3px 0 color-mix(in srgb, var(--lime) 40%, var(--ink-deep)); }
+.lvl.up { animation: lvlup 0.9s var(--ease-out); }
+@keyframes lvlup { 0% { transform: scale(1); } 30% { transform: scale(1.35) rotate(-6deg); background: var(--gold); } 100% { transform: scale(1); } }
+.lvl-title { font-weight: 800; font-size: 1.05rem; }
+.xp-num { margin-left: auto; font: 700 0.78rem var(--f-pixel); color: var(--muted); font-variant-numeric: tabular-nums; }
+.xpbar { position: relative; height: 18px; border-radius: 99px; background: var(--ink-0); border: 2px solid var(--line); overflow: hidden; }
+.xpfill {
+  position: absolute;
+  inset: 0;
+  background: repeating-linear-gradient(-45deg, var(--lime) 0 10px, color-mix(in srgb, var(--lime) 80%, var(--ink-deep)) 10px 20px);
+  background-size: 28.28px 28.28px;
+  transform-origin: left;
+  transform: scaleX(0);
+  transition: transform 0.9s var(--ease-out);
+  animation: stripes 1.4s linear infinite;
+}
+@keyframes stripes { to { background-position: 28.28px 0; } }
+.xp-rules { margin: 0; font-size: 0.84rem; color: var(--muted); }
+.xp-rules b { color: var(--lime); font-weight: 700; }
+.ach { display: grid; gap: 12px; }
+.ach h3 span { color: var(--gold); }
+.badges { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(84px, 1fr)); gap: 12px 8px; }
+.badge {
+  width: 100%;
+  display: grid;
+  justify-items: center;
+  gap: 6px;
+  padding: 0;
+  background: none;
+  border: 0;
+  color: var(--text);
+  font: 700 0.74rem/1.25 var(--f-body);
+  text-align: center;
+  cursor: pointer;
+}
+.medal {
+  position: relative;
+  width: 52px;
+  height: 52px;
+  display: grid;
+  place-items: center;
+  font-size: 1.55rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, oklch(0.96 0.07 92), var(--gold) 55%, oklch(0.62 0.13 72));
+  border: 2px solid var(--ink-deep);
+  box-shadow: 0 4px 0 oklch(0.45 0.1 70);
+  transition: transform 0.3s var(--ease-out);
+}
+@media (hover: hover) { .badge:hover .medal { transform: translateY(-3px) rotate(-8deg); } }
+.badge.locked { color: var(--muted); }
+.badge.locked .medal { background: var(--ink-0); border: 2px dashed var(--line); box-shadow: none; }
+.badge.locked .medal .em { filter: grayscale(1); opacity: 0.35; }
+.badge.just .medal { animation: medal 1s var(--ease-out); }
+.badge.just .medal::after { content: ""; position: absolute; inset: -4px; border-radius: 50%; border: 3px solid var(--gold); animation: ring 1s var(--ease-out) forwards; }
+@keyframes medal { from { transform: scale(0.3) rotate(-180deg); opacity: 0; } }
+@keyframes ring { from { transform: scale(0.8); opacity: 1; } to { transform: scale(1.8); opacity: 0; } }
 .sync { display: flex; flex-wrap: wrap; gap: 6px 12px; align-items: center; font-size: 0.85rem; color: var(--muted); }
-.sync.error { color: var(--accent); }
-.hint { color: var(--accent); font-size: 0.88rem; margin: 0; }
+.sync::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--lime); box-shadow: 0 0 0 3px color-mix(in srgb, var(--lime) 25%, transparent); }
+.sync.error { color: var(--lava); }
+.sync.error::before { background: var(--lava); box-shadow: 0 0 0 3px color-mix(in srgb, var(--lava) 25%, transparent); }
 
-/* Pakkeliste */
-.pack-bar { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; justify-content: space-between; }
-.progress { flex: 1 1 220px; display: grid; gap: 6px; }
-.progress-label { font-weight: 600; font-variant-numeric: tabular-nums; }
-.track { height: 6px; border-radius: 999px; background: var(--line); overflow: hidden; }
-.fill { height: 100%; width: 0; background: var(--accent); transition: width 0.25s ease; }
-.pack-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1px; background: var(--line); border: 1px solid var(--line); border-radius: var(--radius); overflow: hidden; }
-.pack-group { background: var(--surface); padding: 18px 20px; display: grid; gap: 10px; align-content: start; }
+/* ---------- Pakkeliste ---------- */
+.wanted { display: flex; gap: 14px; align-items: flex-start; padding: 14px 16px; background: color-mix(in srgb, var(--gold) 11%, var(--ink-1)); border: 2px dashed var(--gold); border-radius: var(--radius); }
+.wanted-tag { flex: none; font: 700 0.72rem var(--f-pixel); letter-spacing: 0.06em; text-transform: uppercase; color: var(--on-acc); background: var(--gold); padding: 4px 8px 2px; border-radius: 6px; transform: rotate(-4deg); margin-top: 2px; }
+.wanted strong { display: block; font-weight: 800; }
+.pack-bar { display: flex; flex-wrap: wrap; gap: 12px 16px; align-items: flex-end; justify-content: space-between; }
+.progress { flex: 1 1 260px; display: grid; gap: 8px; }
+.progress-row { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; }
+.progress-label { font-weight: 800; font-variant-numeric: tabular-nums; }
+.xp-hint { font: 700 0.7rem var(--f-pixel); color: var(--lime); }
+.cells { display: grid; grid-template-columns: repeat(15, minmax(0, 1fr)); gap: 4px; }
+.cells i { height: 14px; border-radius: 3px; background: var(--ink-0); border: 2px solid var(--line); transition: background 0.3s, border-color 0.3s; }
+.cells i.on { background: var(--lime); border-color: color-mix(in srgb, var(--lime) 45%, var(--ink-deep)); }
+.cells.full i { animation: wave 1.1s var(--ease-out); animation-delay: calc(var(--i) * 40ms); }
+@keyframes wave { 30% { transform: translateY(-6px); background: var(--gold); } }
+.pack-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.pack-group { padding: 16px 16px 14px; display: grid; gap: 10px; align-content: start; }
 .pack-group.wide { grid-column: 1 / -1; }
-.pack-group ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
-.pack-group label { display: flex; gap: 10px; align-items: flex-start; cursor: pointer; }
-.pack-group input { accent-color: var(--accent); width: 18px; height: 18px; margin: 3px 0 0; flex: none; }
-.pack-group input:checked + span { color: var(--muted); text-decoration: line-through; }
+.pack-group ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+.item { display: grid; grid-template-columns: auto auto minmax(0, 1fr); gap: 10px; align-items: center; padding: 5px 6px; border-radius: 10px; cursor: pointer; transition: background 0.2s; }
+.item:hover { background: var(--ink-2); }
+.item input {
+  appearance: none;
+  -webkit-appearance: none;
+  margin: 0;
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  border: 2px solid var(--line);
+  background: var(--ink-0) center / 15px no-repeat;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s, transform 0.25s var(--ease-out);
+}
+.item input:checked {
+  background-color: var(--lime);
+  border-color: var(--lime);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8.5l3.2 3L13 4.5' fill='none' stroke='%231b1630' stroke-width='2.8' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+}
+.item input:active { transform: scale(0.85); }
+.item .ico {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  place-items: center;
+  font-size: 1.15rem;
+  border-radius: 9px;
+  background: var(--ink-0);
+  border: 2px solid var(--line);
+  transition: transform 0.4s var(--ease-out), background-color 0.3s, border-color 0.3s;
+}
+.item input:checked ~ .ico { background-color: color-mix(in srgb, var(--lime) 22%, var(--ink-1)); border-color: var(--lime); transform: rotate(-8deg) scale(1.06); }
+.item .txt { transition: color 0.2s; }
+.item input:checked ~ .txt { color: var(--muted); text-decoration: line-through; text-decoration-color: var(--lime); text-decoration-thickness: 2px; }
+.item .txt .note { font-size: 0.85rem; }
+.flag { font: 700 0.62rem var(--f-pixel); letter-spacing: 0.04em; text-transform: uppercase; color: var(--on-acc); background: var(--gold); border-radius: 4px; padding: 2px 5px 1px; margin-left: 4px; white-space: nowrap; vertical-align: 1px; }
 
-/* Sovepladser */
-.party { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 10px; }
-.slot { background: var(--surface); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px; display: grid; gap: 4px; align-content: start; min-width: 0; }
-.slot .n { font-family: var(--font-display); font-size: 0.75rem; font-weight: 600; letter-spacing: 0.1em; color: var(--muted); font-variant-numeric: tabular-nums; }
-.slot .who { font-weight: 700; overflow-wrap: anywhere; }
-.slot .where { color: var(--ink); }
-.slot .act { margin-top: 6px; }
-.slot.open { border-style: dashed; background: transparent; }
-.slot.open .who { color: var(--muted); font-weight: 600; }
+/* ---------- Sovepladser ---------- */
+.party-meter { display: flex; align-items: center; gap: 10px; font: 700 0.8rem var(--f-pixel); text-transform: uppercase; color: var(--muted); }
+.pips { display: flex; gap: 7px; }
+.pips i { width: 13px; height: 13px; border-radius: 3px; background: var(--ink-0); border: 2px solid var(--line); transform: rotate(45deg); transition: background 0.3s, border-color 0.3s; }
+.pips i.on { background: var(--sky); border-color: var(--sky); }
+#party-count { color: var(--sky); }
+.party { display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 12px; }
+.frame {
+  position: relative;
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  text-align: center;
+  gap: 8px;
+  padding: 26px 10px 14px;
+  background: var(--ink-1);
+  border: 2px solid var(--line);
+  border-radius: var(--radius);
+  box-shadow: 5px 5px 0 var(--acc-deep);
+  min-width: 0;
+}
+.frame .n { position: absolute; top: 8px; left: 10px; font: 700 0.64rem var(--f-pixel); color: var(--muted); }
+.frame .avatar { width: 52px; height: 52px; font-size: 1rem; }
+.frame .fw { display: grid; gap: 2px; min-width: 0; }
+.frame .who { font-weight: 800; overflow-wrap: anywhere; }
+.frame .where { font-size: 0.88rem; color: var(--muted); }
+.frame .crown { position: absolute; top: -16px; left: 50%; font-size: 1.5rem; transform: translateX(-50%) rotate(-12deg); filter: drop-shadow(0 3px 0 var(--ink-deep)); }
+.frame.open { background: transparent; border-style: dashed; box-shadow: none; }
+.frame.open .avatar { color: var(--sky); border-color: var(--sky); animation: breathe 2.4s ease-in-out infinite; }
+.frame.open .who { color: var(--muted); }
+@keyframes breathe { 50% { transform: scale(1.08); } }
 
-/* Madplan */
-.meal-day { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 12px; padding: 14px 20px; border-top: 1px solid var(--line); }
+/* ---------- Madplan ---------- */
+.meal-day { display: grid; grid-template-columns: 130px minmax(0, 1fr); gap: 12px; padding: 16px 20px; border-top: 2px dashed var(--line); }
 .meal-day:first-child { border-top: 0; }
-.day-name { font-family: var(--font-display); font-weight: 700; font-size: 1.05rem; }
-.day-name small { display: block; font-family: var(--font-body); font-weight: 500; font-size: 0.8rem; color: var(--muted); font-variant-numeric: tabular-nums; }
-.meal-list { display: grid; gap: 8px; min-width: 0; }
-.meal { display: grid; grid-template-columns: 76px minmax(0, 1fr) auto; gap: 4px 12px; align-items: baseline; }
-.meal .when { color: var(--muted); font-size: 0.9rem; }
+.day-name { font: 400 1.05rem var(--f-display); text-transform: uppercase; }
+.day-name small { display: block; font: 700 0.72rem var(--f-pixel); color: var(--muted); letter-spacing: 0.04em; }
+.meal-list { display: grid; gap: 6px; min-width: 0; }
+.meal { display: grid; grid-template-columns: 100px minmax(0, 1fr) auto; gap: 4px 12px; align-items: center; padding: 3px 0; }
+.meal .when { color: var(--muted); font-size: 0.9rem; display: inline-flex; gap: 8px; align-items: center; }
+.meal .mi { font-size: 1.1rem; line-height: 1; }
 .meal .what { overflow-wrap: anywhere; }
 .meal .what.tbd { color: var(--muted); font-style: italic; }
-.meal .who { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: baseline; justify-content: flex-end; }
-.pill { font-size: 0.8rem; font-weight: 600; padding: 2px 10px; border-radius: 999px; background: var(--bg); border: 1px solid var(--line); white-space: nowrap; }
-.meal-form { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 10px 12px; background: var(--bg); border-radius: 8px; }
+.meal .who { display: flex; flex-wrap: wrap; gap: 6px 10px; align-items: center; justify-content: flex-end; }
+.meal.dinner { padding: 9px 10px; margin-inline: -10px; border-radius: 12px; }
+.meal.dinner.open { background: color-mix(in srgb, var(--lava) 9%, transparent); box-shadow: inset 0 0 0 2px color-mix(in srgb, var(--lava) 45%, transparent); }
+.meal.dinner.done { background: color-mix(in srgb, var(--lime) 7%, transparent); }
+.tag { display: inline-block; font: 700 0.6rem var(--f-pixel); font-style: normal; letter-spacing: 0.04em; text-transform: uppercase; padding: 3px 6px 1px; border-radius: 5px; margin-left: 8px; white-space: nowrap; vertical-align: 2px; }
+.tag.quest { background: var(--lava); color: var(--on-acc); animation: blink 1.8s steps(2, jump-none) infinite; }
+.tag.boss { background: var(--grape); color: var(--on-acc); }
+@keyframes blink { 50% { opacity: 0.55; } }
+.pill { display: inline-flex; align-items: center; gap: 6px; font-size: 0.8rem; font-weight: 700; padding: 2px 10px; border-radius: 999px; background: var(--ink-0); border: 2px solid var(--line); white-space: nowrap; }
+.pill.cook { padding-left: 3px; border-color: color-mix(in srgb, var(--lime) 55%, var(--line)); }
+.meal-form { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 10px 12px; background: var(--ink-0); border: 2px solid var(--line); border-radius: 12px; }
 .meal-form input { flex: 1 1 220px; }
 
-/* Aktiviteter */
-.acts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-.act { padding: 18px 20px; display: grid; gap: 12px; align-content: start; min-width: 0; }
-.idea-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
-.idea { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 10px; align-items: start; }
-.idea .title { overflow-wrap: anywhere; }
-.idea .by { display: block; font-size: 0.8rem; color: var(--muted); }
+/* ---------- Aktiviteter ---------- */
+.legend { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; margin: 0; padding: 0; list-style: none; font-size: 0.82rem; color: var(--muted); }
+.legend li { display: inline-flex; align-items: center; gap: 7px; }
+.legend li:first-child { font: 700 0.7rem var(--f-pixel); text-transform: uppercase; }
+.gem { width: 12px; height: 12px; flex: none; transform: rotate(45deg); border-radius: 3px; background: var(--rc, var(--r-common)); box-shadow: 0 0 0 2px var(--ink-deep); }
+.r-common { --rc: var(--r-common); }
+.r-uncommon { --rc: var(--r-uncommon); }
+.r-rare { --rc: var(--r-rare); }
+.r-epic { --rc: var(--r-epic); }
+.r-legendary { --rc: var(--r-legendary); }
+.acts { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.act { padding: 16px 18px; display: grid; gap: 12px; align-content: start; min-width: 0; }
+.act h3 { display: flex; gap: 8px; align-items: center; }
+.act h3 .e { font-size: 1.25rem; line-height: 1; }
+.idea-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 12px; }
+.idea { display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 10px; align-items: start; }
+.idea .gem { margin-top: 7px; }
+.idea .title { overflow-wrap: anywhere; font-weight: 600; }
+.idea .title a { color: var(--sky); }
+.idea.r-rare .title, .idea.r-epic .title, .idea.r-legendary .title, .idea.r-rare .title a, .idea.r-epic .title a, .idea.r-legendary .title a { color: var(--rc); }
+.idea.r-legendary .gem { animation: shine 1.8s ease-in-out infinite alternate; }
+@keyframes shine { to { box-shadow: 0 0 0 2px var(--ink-deep), 0 0 14px 3px var(--r-legendary); } }
+.idea .crown { margin-left: 6px; display: inline-block; transform: rotate(-10deg); }
+.idea .by { display: block; font-size: 0.8rem; font-weight: 500; color: var(--muted); }
 .vote {
-  font: 600 0.8rem var(--font-body);
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font: 800 0.82rem var(--f-body);
+  font-variant-numeric: tabular-nums;
   color: var(--muted);
-  background: transparent;
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  padding: 2px 10px;
+  background: var(--ink-0);
+  border: 2px solid var(--line);
+  border-radius: 9px;
+  padding: 3px 9px;
   cursor: pointer;
   white-space: nowrap;
-  font-variant-numeric: tabular-nums;
+  box-shadow: 0 3px 0 var(--ink-deep);
+  transition: transform 0.12s var(--ease-out), box-shadow 0.12s, color 0.2s, border-color 0.2s, background-color 0.2s;
 }
-.vote:hover { border-color: var(--accent); color: var(--accent); }
-.vote[aria-pressed="true"] { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
-.empty { color: var(--muted); font-style: italic; margin: 0; }
-.add-idea { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 16px 20px; }
+.vote .arrow { font-size: 0.7rem; }
+.vote:hover { border-color: var(--grape); color: var(--text); }
+.vote:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink-deep); }
+.vote[aria-pressed="true"] { background: var(--grape); border-color: var(--ink-deep); color: var(--on-acc); box-shadow: 0 3px 0 var(--acc-deep); }
+.add-idea { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 16px 18px; }
 .add-idea input { flex: 1 1 240px; }
 
-/* Økonomi */
+/* ---------- Økonomi ---------- */
 .money { margin: 0; }
-.money-row { display: grid; grid-template-columns: 200px minmax(0, 1fr); gap: 4px 16px; padding: 14px 20px; border-top: 1px solid var(--line); }
+.money-row { display: grid; grid-template-columns: 230px minmax(0, 1fr); gap: 4px 16px; padding: 14px 20px; border-top: 2px dashed var(--line); }
 .money-row:first-child { border-top: 0; }
-.money-row dt { font-weight: 600; }
+.money-row dt { font-weight: 800; display: flex; gap: 10px; align-items: center; }
+.money-row dt span { font-size: 1.2rem; line-height: 1; }
 .money-row dd { margin: 0; }
 
 footer { color: var(--muted); font-size: 0.85rem; padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px)); }
 footer .wrap { display: grid; gap: 4px; }
+.psst { font: 700 0.68rem var(--f-pixel); color: color-mix(in srgb, var(--muted) 60%, var(--ink-0)); margin-top: 8px; }
 
-.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+/* ---------- Effekter ---------- */
+.toasts {
+  position: fixed;
+  left: 50%;
+  bottom: max(16px, env(safe-area-inset-bottom, 0px));
+  z-index: 120;
+  display: grid;
+  gap: 8px;
+  width: min(380px, calc(100vw - 32px));
+  transform: translateX(-50%);
+  pointer-events: none;
+}
+.toast {
+  --tc: var(--line);
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 14px;
+  background: var(--ink-1);
+  border: 2px solid var(--tc);
+  border-radius: 14px;
+  box-shadow: 0 6px 0 var(--ink-deep), 0 18px 40px oklch(0.05 0.02 288 / 0.55);
+  animation: toast-in 0.5s var(--ease-out);
+}
+.toast.out { animation: toast-out 0.35s ease-in forwards; }
+.t-gold { --tc: var(--gold); }
+.t-lime { --tc: var(--lime); }
+.t-lava { --tc: var(--lava); }
+.t-sky { --tc: var(--sky); }
+.t-grape { --tc: var(--grape); }
+.toast-ico { font-size: 1.7rem; line-height: 1; }
+.toast-body { display: grid; min-width: 0; }
+.toast strong { font: 700 0.74rem var(--f-pixel); letter-spacing: 0.04em; text-transform: uppercase; color: var(--tc); }
+.toast:not([class*="t-"]) strong { color: var(--text); }
+.toast-body span { font-weight: 600; font-size: 0.92rem; overflow-wrap: anywhere; }
+@keyframes toast-in { from { transform: translateY(24px) scale(0.94); opacity: 0; } }
+@keyframes toast-out { to { transform: translateY(16px) scale(0.96); opacity: 0; } }
+.spark { position: fixed; z-index: 130; width: 8px; height: 8px; border-radius: 2px; pointer-events: none; }
+.spark.emo { width: auto; height: auto; background: none; font-size: 20px; line-height: 1; }
+.floater { position: fixed; z-index: 130; pointer-events: none; font: 700 0.85rem var(--f-pixel); color: var(--lime); text-shadow: 0 2px 0 var(--ink-deep); white-space: nowrap; }
+.rain { position: fixed; top: 0; z-index: 110; pointer-events: none; line-height: 1; transform: translateY(-12vh); }
+body.party h1 .ch { animation: party 0.5s ease-in-out infinite alternate; animation-delay: calc(var(--i) * 55ms); }
+@keyframes party { to { transform: translateY(-0.14em) rotate(5deg); color: var(--lime); } }
+body.party .stk .em { animation: whirl 0.9s linear infinite; }
+@keyframes whirl { to { transform: rotate(calc(var(--r) + 360deg)); } }
 
-@media (max-width: 600px) {
-  .party { grid-template-columns: 1fr; gap: 0; border: 1px solid var(--line); border-radius: var(--radius); background: var(--surface); overflow: hidden; }
-  .slot { grid-template-columns: 40px minmax(0, 1fr) auto; align-items: baseline; gap: 4px 10px; border: 0; border-top: 1px solid var(--line); border-radius: 0; }
-  .slot:first-child { border-top: 0; }
-  .slot.open { border-style: solid; border-width: 1px 0 0; background: var(--surface); }
-  .slot:first-child.open { border-top: 0; }
-  .slot .where { grid-column: 2; grid-row: 2; color: var(--muted); font-size: 0.9rem; }
-  .slot .act { grid-column: 3; grid-row: 1 / span 2; margin: 0; align-self: center; }
+.reveal-on .rv { opacity: 0; transform: translateY(28px); transition: opacity 0.8s var(--ease-out), transform 0.8s var(--ease-out); }
+.reveal-on .rv.in { opacity: 1; transform: none; }
+
+/* ---------- Mobil ---------- */
+@media (max-width: 760px) {
+  .hud-links kbd { display: none; }
+}
+@media (max-width: 640px) {
+  .stk:not(.m) { display: none; }
+  .stk { font-size: calc(var(--s) * 0.72); opacity: 0.8; }
+  .hud-links .t { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; }
+  .hud-links a { padding: 6px 9px; }
+  .hud-links .e { font-size: 1.3rem; }
+  .party { grid-template-columns: 1fr; gap: 10px; }
+  .frame { grid-template-columns: auto minmax(0, 1fr) auto; justify-items: start; align-items: center; text-align: left; gap: 12px; padding: 12px 14px; }
+  .frame .n { display: none; }
+  .frame .avatar { width: 44px; height: 44px; font-size: 0.9rem; }
+  .frame .crown { top: -12px; left: 30px; }
+  .frame .act { justify-self: end; }
   .pack-grid, .acts { grid-template-columns: 1fr; }
-  .meal-day { grid-template-columns: 1fr; gap: 8px; }
+  .meal-day { grid-template-columns: 1fr; gap: 8px; padding: 14px 16px; }
   .day-name small { display: inline; margin-left: 8px; }
-  .money-row { grid-template-columns: 1fr; }
+  .money-row { grid-template-columns: 1fr; padding: 14px 16px; }
 }
 @media (max-width: 480px) {
   .facts { grid-template-columns: 1fr; }
-  .fact:nth-child(even) { padding-left: 0; border-left: 0; }
-  .meal { grid-template-columns: 64px minmax(0, 1fr); }
+  .timer-cells { grid-template-columns: repeat(4, minmax(0, 1fr)); width: 100%; }
+  .timer { justify-self: stretch; }
+  .meal { grid-template-columns: 84px minmax(0, 1fr); }
   .meal .who { grid-column: 2; justify-content: flex-start; }
+  .mini-xp { display: none; }
+  .wanted { flex-direction: column; gap: 8px; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .fill { transition: none; }
   html { scroll-behavior: auto; }
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  .stk .bob { animation: none; }
 }
 </style>
 </head>
 <body>
 
-<div class="hero">
-  <div class="wrap">
-    <div>
-      <div class="eyebrow"><span>Uge 46 · Skive</span><span class="countdown" id="countdown">12.–15. november</span></div>
-      <h1>LAN hos Larsen</h1>
-      <p class="dates">Torsdag 12. <span>til</span> søndag 15. november 2026</p>
+<header class="hero">
+  <div class="stickers" id="stickers" aria-hidden="true"></div>
+  <div class="wrap hero-in">
+    <p class="hero-tag"><span class="chip-pix">Uge 46</span><span>Skive · 5 spillere · 4 dage</span></p>
+    <h1 id="title">LAN hos Larsen</h1>
+    <p class="dates">Torsdag 12. <span>til</span> søndag 15. november 2026</p>
+    <div class="timer" role="timer">
+      <p class="timer-label" id="timer-label">LAN starter om</p>
+      <div class="timer-cells" id="timer-cells">
+        <div class="cell"><b id="t-d">--</b><span>dage</span></div>
+        <div class="cell"><b id="t-h">--</b><span>timer</span></div>
+        <div class="cell"><b id="t-m">--</b><span>min</span></div>
+        <div class="cell"><b id="t-s">--</b><span>sek</span></div>
+      </div>
+      <p class="timer-live" id="timer-live" hidden></p>
     </div>
     <dl class="facts">
-      <div class="fact"><dt>Adresse</dt><dd>Står i gruppechatten</dd></div>
-      <div class="fact"><dt>Ankomst</dt><dd>Torsdag kl. 16.30</dd></div>
-      <div class="fact"><dt>Afgang</dt><dd>Søndag</dd></div>
-      <div class="fact"><dt>Parkering</dt><dd>Ude foran huset langs hækken</dd></div>
+      <div class="fact" data-ico="📍"><dt>Adresse</dt><dd>Står i gruppechatten</dd></div>
+      <div class="fact" data-ico="🕟"><dt>Ankomst</dt><dd>Torsdag kl. 16.30</dd></div>
+      <div class="fact" data-ico="🏁"><dt>Afgang</dt><dd>Søndag</dd></div>
+      <div class="fact" data-ico="🚗"><dt>Parkering</dt><dd>Ude foran huset langs hækken</dd></div>
     </dl>
   </div>
-</div>
+</header>
 
-<nav class="nav" aria-label="Sektioner">
+<nav class="hud" aria-label="Sektioner">
   <div class="wrap">
-    <a href="#pakkeliste">Pakkeliste</a>
-    <a href="#sovepladser">Sovepladser</a>
-    <a href="#madplan">Madplan</a>
-    <a href="#aktiviteter">Aktiviteter</a>
-    <a href="#okonomi">Økonomi</a>
+    <div class="hud-links">
+      <a href="#pakkeliste" data-acc="lime"><span class="e" aria-hidden="true">🎒</span><span class="t">Pakkeliste</span><kbd aria-hidden="true">1</kbd></a>
+      <a href="#sovepladser" data-acc="sky"><span class="e" aria-hidden="true">🛏️</span><span class="t">Sovepladser</span><kbd aria-hidden="true">2</kbd></a>
+      <a href="#madplan" data-acc="lava"><span class="e" aria-hidden="true">🍖</span><span class="t">Madplan</span><kbd aria-hidden="true">3</kbd></a>
+      <a href="#aktiviteter" data-acc="grape"><span class="e" aria-hidden="true">🎮</span><span class="t">Aktiviteter</span><kbd aria-hidden="true">4</kbd></a>
+      <a href="#okonomi" data-acc="gold"><span class="e" aria-hidden="true">💰</span><span class="t">Økonomi</span><kbd aria-hidden="true">5</kbd></a>
+    </div>
+    <a class="me-chip" id="me-chip" href="#spiller" aria-label="Din spiller"><span class="avatar empty" id="chip-av" aria-hidden="true">?</span><span class="lvl-s" id="chip-lvl">LVL 1</span><span class="mini-xp" aria-hidden="true"><i id="chip-xp"></i></span></a>
   </div>
 </nav>
 
 <main>
   <div class="wrap">
 
-    <div class="panel whoami">
-      <div class="whoami-row">
-        <label for="me">Hvem er du?</label>
-        <input type="text" id="me" maxlength="40" placeholder="Dit navn" autocomplete="nickname">
+    <div class="panel player" id="spiller" data-acc="lava">
+      <div class="player-top">
+        <span class="avatar big empty" id="avatar" aria-hidden="true">?</span>
+        <div class="player-id">
+          <label for="me">Hvem er du?</label>
+          <input type="text" id="me" maxlength="40" placeholder="Dit navn" autocomplete="nickname">
+          <p class="hint" id="me-hint" hidden>Skriv dit navn her først, så de andre kan se, hvem der har meldt sig.</p>
+        </div>
       </div>
-      <p class="hint" id="me-hint" hidden>Skriv dit navn her først, så de andre kan se, hvem der har meldt sig.</p>
+      <div class="level">
+        <div class="level-row"><span class="lvl" id="lvl">LVL 1</span><span class="lvl-title" id="lvl-title">Noob</span><span class="xp-num" id="xp-num">0 / 50 XP</span></div>
+        <div class="xpbar" aria-hidden="true"><div class="xpfill" id="xpfill"></div></div>
+        <p class="xp-rules">Pak en ting <b>+10</b> · stem <b>+20</b> · ny idé <b>+40</b> · soveplads <b>+75</b> · tag en aften <b>+100</b></p>
+      </div>
+      <div class="ach">
+        <h3>Achievements <span id="ach-count">0/8</span></h3>
+        <ul class="badges" id="badges"></ul>
+      </div>
       <div class="sync" id="sync" role="status"><span id="sync-text">Henter fælles data…</span><button class="linkbtn" id="sync-retry" type="button" hidden>Prøv igen</button></div>
     </div>
 
-    <section id="pakkeliste" aria-labelledby="h-pak">
+    <section id="pakkeliste" class="rv" data-acc="lime" aria-labelledby="h-pak">
       <div class="sec-head">
-        <h2 id="h-pak">Pakkeliste</h2>
+        <h2 id="h-pak"><span class="hico" aria-hidden="true">🎒</span>Pakkeliste</h2>
         <p class="lead">Alle tager eget setup med, og spillene skal være downloadet og opdateret hjemmefra, så vi ikke brænder torsdagen af på downloads.</p>
       </div>
-      <div class="callout"><strong>Mangler</strong><span>Én, der tager en switch med, så der er LAN-stik nok til alle. Jeg har ikke selv en, så sig til i gruppen, hvis du har en.</span></div>
+      <div class="wanted">
+        <span class="wanted-tag">Efterlyst</span>
+        <div><strong>En switch</strong><span>Én, der tager en switch med, så der er LAN-stik nok til alle. Jeg har ikke selv en, så sig til i gruppen, hvis du har en.</span></div>
+      </div>
       <div class="pack-bar">
         <div class="progress">
-          <span class="progress-label" id="pack-count">0 af 15 pakket</span>
-          <div class="track" aria-hidden="true"><div class="fill" id="pack-fill"></div></div>
+          <div class="progress-row"><span class="progress-label" id="pack-count">0 af 15 pakket</span><span class="xp-hint">+10 XP pr. ting</span></div>
+          <div class="cells" id="pack-cells" aria-hidden="true"></div>
         </div>
         <button class="ghost" id="pack-reset" type="button">Nulstil liste</button>
       </div>
       <div class="pack-grid" id="pack">
-        <div class="pack-group">
+        <div class="panel pack-group">
           <h3>Setup</h3>
           <ul>
-            <li><label><input type="checkbox" id="p-pc"><span>PC + strømkabel</span></label></li>
-            <li><label><input type="checkbox" id="p-skaerm"><span>Skærm(e) + strøm- og HDMI/DP-kabel</span></label></li>
-            <li><label><input type="checkbox" id="p-tast"><span>Tastatur, mus og musemåtte</span></label></li>
-            <li><label><input type="checkbox" id="p-headset"><span>Headset med mikrofon</span></label></li>
+            <li><label class="item"><input type="checkbox" id="p-pc"><span class="ico" aria-hidden="true">🖥️</span><span class="txt">PC + strømkabel</span></label></li>
+            <li><label class="item"><input type="checkbox" id="p-skaerm"><span class="ico" aria-hidden="true">📺</span><span class="txt">Skærm(e) + strøm- og HDMI/DP-kabel</span></label></li>
+            <li><label class="item"><input type="checkbox" id="p-tast"><span class="ico" aria-hidden="true">⌨️</span><span class="txt">Tastatur, mus og musemåtte</span></label></li>
+            <li><label class="item"><input type="checkbox" id="p-headset"><span class="ico" aria-hidden="true">🎧</span><span class="txt">Headset med mikrofon</span></label></li>
           </ul>
         </div>
-        <div class="pack-group">
+        <div class="panel pack-group">
           <h3>Netværk og strøm</h3>
           <ul>
-            <li><label><input type="checkbox" id="p-kabel"><span>Netværkskabel, gerne 5–10 m</span></label></li>
-            <li><label><input type="checkbox" id="p-stik"><span>Stikdåse/forlængerledning</span></label></li>
-            <li><label><input type="checkbox" id="p-switch"><span>Switch, hvis du har en <span class="flag">Mangler</span></span></label></li>
+            <li><label class="item"><input type="checkbox" id="p-kabel"><span class="ico" aria-hidden="true">🌐</span><span class="txt">Netværkskabel, gerne 5–10 m</span></label></li>
+            <li><label class="item"><input type="checkbox" id="p-stik"><span class="ico" aria-hidden="true">🔌</span><span class="txt">Stikdåse/forlængerledning</span></label></li>
+            <li><label class="item"><input type="checkbox" id="p-switch"><span class="ico" aria-hidden="true">🔀</span><span class="txt">Switch, hvis du har en <span class="flag">Mangler</span></span></label></li>
           </ul>
         </div>
-        <div class="pack-group">
+        <div class="panel pack-group">
           <h3>Sovegrej</h3>
           <ul>
-            <li><label><input type="checkbox" id="p-dyne"><span>Pude og lagen</span></label></li>
-            <li><label><input type="checkbox" id="p-madras"><span>Madras <span class="note">(se Sovepladser)</span></span></label></li>
+            <li><label class="item"><input type="checkbox" id="p-dyne"><span class="ico" aria-hidden="true">💤</span><span class="txt">Pude og lagen</span></label></li>
+            <li><label class="item"><input type="checkbox" id="p-madras"><span class="ico" aria-hidden="true">🛏️</span><span class="txt">Madras <span class="note">(se Sovepladser)</span></span></label></li>
           </ul>
           <p class="note">Kun én af jer skal have dyne med, resten får dyne her. Aftal i gruppen, hvem der tager den.</p>
         </div>
-        <div class="pack-group">
+        <div class="panel pack-group">
           <h3>Personligt</h3>
           <ul>
-            <li><label><input type="checkbox" id="p-toilet"><span>Toiletsager og håndklæde</span></label></li>
-            <li><label><input type="checkbox" id="p-toej"><span>Skiftetøj</span></label></li>
-            <li><label><input type="checkbox" id="p-varmt"><span>Varmt tøj + regnjakke til turen udenfor</span></label></li>
-            <li><label><input type="checkbox" id="p-oplader"><span>Telefonoplader</span></label></li>
+            <li><label class="item"><input type="checkbox" id="p-toilet"><span class="ico" aria-hidden="true">🧼</span><span class="txt">Toiletsager og håndklæde</span></label></li>
+            <li><label class="item"><input type="checkbox" id="p-toej"><span class="ico" aria-hidden="true">👕</span><span class="txt">Skiftetøj</span></label></li>
+            <li><label class="item"><input type="checkbox" id="p-varmt"><span class="ico" aria-hidden="true">🧥</span><span class="txt">Varmt tøj + regnjakke til turen udenfor</span></label></li>
+            <li><label class="item"><input type="checkbox" id="p-oplader"><span class="ico" aria-hidden="true">🔋</span><span class="txt">Telefonoplader</span></label></li>
           </ul>
         </div>
-        <div class="pack-group wide">
+        <div class="panel pack-group wide">
           <h3>Til fællesskabet (valgfrit)</h3>
           <ul>
-            <li><label><input type="checkbox" id="p-spil"><span>Brætspil eller kortspil</span></label></li>
-            <li><label><input type="checkbox" id="p-snacks"><span>Ekstra snacks eller drikke, du selv vil have</span></label></li>
+            <li><label class="item"><input type="checkbox" id="p-spil"><span class="ico" aria-hidden="true">🎲</span><span class="txt">Brætspil eller kortspil</span></label></li>
+            <li><label class="item"><input type="checkbox" id="p-snacks"><span class="ico" aria-hidden="true">🍿</span><span class="txt">Ekstra snacks eller drikke, du selv vil have</span></label></li>
           </ul>
         </div>
       </div>
       <p class="note">Flueben gemmes kun i din egen browser.</p>
     </section>
 
-    <section id="sovepladser" aria-labelledby="h-sov">
+    <section id="sovepladser" class="rv" data-acc="sky" aria-labelledby="h-sov">
       <div class="sec-head">
-        <h2 id="h-sov">Sovepladser</h2>
+        <h2 id="h-sov"><span class="hico" aria-hidden="true">🛏️</span>Sovepladser</h2>
         <p class="lead">Vi er fem. Sengen er taget, der er en sofa, og vi har en madras til én. De sidste to tager selv madras med. Skriv dig på en plads.</p>
       </div>
+      <div class="party-meter"><span>Party</span><span class="pips" id="pips" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></span><span id="party-count">1/5</span></div>
       <div class="party" id="party">
-        <div class="slot"><span class="n">1/5</span><span class="who">Andreas</span><span class="where">Seng</span></div>
+        <div class="frame host">
+          <span class="crown" aria-hidden="true">👑</span>
+          <span class="n">1/5</span>
+          <span class="avatar" id="host-av" aria-hidden="true">AN</span>
+          <span class="fw"><span class="who">Andreas</span><span class="where"><span aria-hidden="true">🛏️ </span>Seng</span></span>
+        </div>
       </div>
       <div class="callout"><strong>Borde</strong><span>Der er borde nok til alle, så du skal ikke tage bord med.</span></div>
     </section>
 
-    <section id="madplan" aria-labelledby="h-mad">
+    <section id="madplan" class="rv" data-acc="lava" aria-labelledby="h-mad">
       <div class="sec-head">
-        <h2 id="h-mad">Madplan</h2>
+        <h2 id="h-mad"><span class="hico" aria-hidden="true">🍖</span>Madplan</h2>
         <p class="lead">Samme model som sidst: Jeg står for morgen og frokost, aftensmaden tager vi på skift, og lørdag er festmåltid. Tag en aften og skriv, hvad du laver.</p>
       </div>
       <div class="panel">
@@ -397,32 +829,40 @@ footer .wrap { display: grid; gap: 4px; }
         <div class="meal-day">
           <div class="day-name">Fredag<small>13/11</small></div>
           <div class="meal-list" data-dinner="fre">
-            <div class="meal"><span class="when">Morgen</span><span class="what">Blandet morgenbord</span><span class="who"><span class="pill">Jeg handler ind</span></span></div>
-            <div class="meal"><span class="when">Frokost</span><span class="what">Blandet frokost</span><span class="who"><span class="pill">Jeg handler ind</span></span></div>
+            <div class="meal"><span class="when"><span class="mi" aria-hidden="true">🥐</span>Morgen</span><span class="what">Blandet morgenbord</span><span class="who"><span class="pill">Jeg handler ind</span></span></div>
+            <div class="meal"><span class="when"><span class="mi" aria-hidden="true">🥪</span>Frokost</span><span class="what">Blandet frokost</span><span class="who"><span class="pill">Jeg handler ind</span></span></div>
           </div>
         </div>
         <div class="meal-day">
           <div class="day-name">Lørdag<small>14/11</small></div>
           <div class="meal-list" data-dinner="lor">
-            <div class="meal"><span class="when">Morgen</span><span class="what">Blandet morgenbord</span><span class="who"><span class="pill">Jeg handler ind</span></span></div>
-            <div class="meal"><span class="when">Frokost</span><span class="what">Blandet frokost</span><span class="who"><span class="pill">Jeg handler ind</span></span></div>
+            <div class="meal"><span class="when"><span class="mi" aria-hidden="true">🥐</span>Morgen</span><span class="what">Blandet morgenbord</span><span class="who"><span class="pill">Jeg handler ind</span></span></div>
+            <div class="meal"><span class="when"><span class="mi" aria-hidden="true">🥪</span>Frokost</span><span class="what">Blandet frokost</span><span class="who"><span class="pill">Jeg handler ind</span></span></div>
           </div>
         </div>
         <div class="meal-day">
           <div class="day-name">Søndag<small>15/11</small></div>
           <div class="meal-list">
-            <div class="meal"><span class="when">Morgen</span><span class="what">Blandet morgenbord</span><span class="who"><span class="pill">Jeg handler ind</span></span></div>
+            <div class="meal"><span class="when"><span class="mi" aria-hidden="true">🥐</span>Morgen</span><span class="what">Blandet morgenbord</span><span class="who"><span class="pill">Jeg handler ind</span></span></div>
           </div>
         </div>
       </div>
       <p class="note">Fredag og lørdag aften kan byttes om.</p>
     </section>
 
-    <section id="aktiviteter" aria-labelledby="h-akt">
+    <section id="aktiviteter" class="rv" data-acc="grape" aria-labelledby="h-akt">
       <div class="sec-head">
-        <h2 id="h-akt">Aktiviteter</h2>
+        <h2 id="h-akt"><span class="hico" aria-hidden="true">🎮</span>Aktiviteter</h2>
         <p class="lead">Idéer til hvad vi kan lave. Vi er fem, så vi er præcis et fuldt M+-hold. Stem på det, du helst vil, eller tilføj din egen idé.</p>
       </div>
+      <ul class="legend" aria-label="Sjældenhed efter antal stemmer">
+        <li>Sjældenhed</li>
+        <li><span class="gem r-common" aria-hidden="true"></span>0 Almindelig</li>
+        <li><span class="gem r-uncommon" aria-hidden="true"></span>1 Ualmindelig</li>
+        <li><span class="gem r-rare" aria-hidden="true"></span>2 Sjælden</li>
+        <li><span class="gem r-epic" aria-hidden="true"></span>3 Episk</li>
+        <li><span class="gem r-legendary" aria-hidden="true"></span>4+ Legendarisk</li>
+      </ul>
       <div class="acts" id="acts"></div>
       <form class="panel add-idea" id="idea-form">
         <label class="sr-only" for="idea-cat">Kategori</label>
@@ -438,16 +878,16 @@ footer .wrap { display: grid; gap: 4px; }
       </form>
     </section>
 
-    <section id="okonomi" aria-labelledby="h-oko">
+    <section id="okonomi" class="rv" data-acc="gold" aria-labelledby="h-oko">
       <div class="sec-head">
-        <h2 id="h-oko">Økonomi</h2>
+        <h2 id="h-oko"><span class="hico" aria-hidden="true"><span class="spin">💰</span></span>Økonomi</h2>
         <p class="lead">Fælles udgifter deles ligeligt mellem os fem via MobilePay.</p>
       </div>
       <dl class="panel money">
-        <div class="money-row"><dt>Morgenmad og frokost</dt><dd>På min regning</dd></div>
-        <div class="money-row"><dt>Drikkevarer og snacks</dt><dd>Fælles indkøb, deles ligeligt i fem</dd></div>
-        <div class="money-row"><dt>Aftensmad</dt><dd>Den, der laver maden, lægger ud og sender en MobilePay-anmodning bagefter</dd></div>
-        <div class="money-row"><dt>Festmåltid lørdag</dt><dd>Deles ligeligt</dd></div>
+        <div class="money-row"><dt><span aria-hidden="true">🥐</span>Morgenmad og frokost</dt><dd>På min regning</dd></div>
+        <div class="money-row"><dt><span aria-hidden="true">🍻</span>Drikkevarer og snacks</dt><dd>Fælles indkøb, deles ligeligt i fem</dd></div>
+        <div class="money-row"><dt><span aria-hidden="true">🍳</span>Aftensmad</dt><dd>Den, der laver maden, lægger ud og sender en MobilePay-anmodning bagefter</dd></div>
+        <div class="money-row"><dt><span aria-hidden="true">🥩</span>Festmåltid lørdag</dt><dd>Deles ligeligt</dd></div>
       </dl>
     </section>
 
@@ -457,9 +897,12 @@ footer .wrap { display: grid; gap: 4px; }
 <footer>
   <div class="wrap">
     <span>Kokke, sovepladser og idéer gemmes i en fælles database, som alle med linket kan skrive i.</span>
-    <span>Sidst opdateret 4. november 2026</span>
+    <span>Sidst opdateret 5. november 2026</span>
+    <span class="psst">Psst. Der er gemt en snydekode på siden.</span>
   </div>
 </footer>
+
+<div class="toasts" id="toasts" aria-live="polite"></div>
 
 <script>
 (function () {
@@ -468,12 +911,21 @@ footer .wrap { display: grid; gap: 4px; }
   var SB_URL = 'https://whwrxaevkiauhhvfpmsc.supabase.co';
   var SB_KEY = 'sb_publishable_8d-Gjb_WHQBmmNssDPh4Cw_C8DS8A9b';
   var CATEGORIES = ['Gaming', 'Andre aktiviteter', 'Udenfor', 'Ud af huset'];
+  var CAT_ICON = { 'Gaming': '🎮', 'Andre aktiviteter': '🎲', 'Udenfor': '🌲', 'Ud af huset': '🚐' };
+  var SPOT_ICON = { sofa: '🛋️', madras: '☁️', egen1: '🎒', egen2: '🎒' };
+  var HOST = 'Andreas';
 
+  // ---------- Hjælpere ----------
   function $(id) { return document.getElementById(id); }
   function el(tag, cls, text) {
     var e = document.createElement(tag);
     if (cls) e.className = cls;
     if (text != null) e.textContent = text;
+    return e;
+  }
+  function deco(tag, cls, text) {
+    var e = el(tag, cls, text);
+    e.setAttribute('aria-hidden', 'true');
     return e;
   }
   function store(key, val) {
@@ -482,23 +934,285 @@ footer .wrap { display: grid; gap: 4px; }
       localStorage.setItem(key, val);
     } catch (e) { return null; }
   }
+  function calm() { return !!(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches); }
+  function norm(s) { return String(s || '').trim().toLocaleLowerCase('da'); }
+  function initials(name) {
+    var parts = String(name || '').trim().split(/\s+/).filter(Boolean);
+    if (!parts.length) return '?';
+    var a = Array.from(parts[0]);
+    var b = parts[1] ? Array.from(parts[1]) : [];
+    return ((a[0] || '') + (b[0] || a[1] || '')).toUpperCase();
+  }
+  function hue(name) {
+    var h = 7, s = norm(name);
+    for (var i = 0; i < s.length; i++) h = (h * 31 + s.charCodeAt(i)) % 360;
+    return h;
+  }
+  function paintAvatar(a, name) {
+    a.textContent = name ? initials(name) : '?';
+    a.classList.toggle('empty', !name);
+    if (name) a.style.setProperty('--h', hue(name));
+    return a;
+  }
+  function avatar(name, cls) { return paintAvatar(deco('span', 'avatar' + (cls ? ' ' + cls : '')), name); }
+  function restart(node, cls) { node.classList.remove(cls); void node.offsetWidth; node.classList.add(cls); }
+  function center(node) {
+    var r = node.getBoundingClientRect();
+    return { x: r.left + r.width / 2, y: r.top + r.height / 2, top: r.top };
+  }
+
+  // ---------- Effekter ----------
+  var COLORS = ['var(--lava)', 'var(--lime)', 'var(--grape)', 'var(--sky)', 'var(--gold)'];
+  function canAnimate() { return !calm() && typeof document.body.animate === 'function'; }
+
+  function burst(x, y, o) {
+    if (!canAnimate()) return;
+    o = o || {};
+    var n = o.n || 12;
+    for (let i = 0; i < n; i++) {
+      const p = deco('span', 'spark');
+      if (o.emoji) { p.textContent = o.emoji[i % o.emoji.length]; p.classList.add('emo'); }
+      else {
+        p.style.background = COLORS[i % COLORS.length];
+        if (i % 3 === 0) p.style.borderRadius = '50%';
+      }
+      p.style.left = x + 'px';
+      p.style.top = y + 'px';
+      document.body.appendChild(p);
+      var ang = Math.random() * Math.PI * 2;
+      var dist = (o.spread || 60) * (0.45 + Math.random() * 0.75);
+      var dx = Math.cos(ang) * dist;
+      var dy = Math.sin(ang) * dist - (o.lift || 24);
+      var rot = (Math.random() * 2 - 1) * 540;
+      p.animate([
+        { transform: 'translate(-50%, -50%) scale(.4)', opacity: 1 },
+        { transform: 'translate(calc(-50% + ' + dx + 'px), calc(-50% + ' + dy + 'px)) rotate(' + (rot / 2) + 'deg) scale(1)', opacity: 1, offset: 0.55 },
+        { transform: 'translate(calc(-50% + ' + (dx * 1.2) + 'px), calc(-50% + ' + (dy + (o.fall || 70)) + 'px)) rotate(' + rot + 'deg) scale(.7)', opacity: 0 }
+      ], { duration: 750 + Math.random() * 550, easing: 'cubic-bezier(.16, 1, .3, 1)' }).onfinish = function () { p.remove(); };
+    }
+  }
+
+  function floatAt(x, y, text, color) {
+    if (!canAnimate()) return;
+    var f = deco('span', 'floater', text);
+    f.style.left = x + 'px';
+    f.style.top = y + 'px';
+    if (color) f.style.color = color;
+    document.body.appendChild(f);
+    f.animate([
+      { transform: 'translate(-50%, 0) scale(.7)', opacity: 0 },
+      { transform: 'translate(-50%, -16px) scale(1.05)', opacity: 1, offset: 0.25 },
+      { transform: 'translate(-50%, -58px) scale(1)', opacity: 0 }
+    ], { duration: 1100, easing: 'cubic-bezier(.16, 1, .3, 1)' }).onfinish = function () { f.remove(); };
+  }
+
+  function toast(icon, title, text, tone) {
+    var box = $('toasts');
+    var t = el('div', 'toast' + (tone ? ' t-' + tone : ''));
+    t.appendChild(deco('span', 'toast-ico', icon));
+    var b = el('div', 'toast-body');
+    b.appendChild(el('strong', null, title));
+    if (text) b.appendChild(el('span', null, text));
+    t.appendChild(b);
+    box.appendChild(t);
+    while (box.children.length > 3) box.removeChild(box.firstChild);
+    setTimeout(function () {
+      t.classList.add('out');
+      setTimeout(function () { t.remove(); }, 380);
+    }, 3800);
+  }
+
+  function confetti() {
+    if (!canAnimate()) return;
+    var w = window.innerWidth, h = window.innerHeight;
+    burst(w / 2, h - 70, { n: 28, spread: 170, lift: 150, fall: 240 });
+    setTimeout(function () {
+      burst(w * 0.18, h * 0.4, { n: 12, spread: 110, lift: 70, fall: 180, emoji: ['🎉', '✨', '⭐'] });
+      burst(w * 0.82, h * 0.4, { n: 12, spread: 110, lift: 70, fall: 180, emoji: ['🎉', '✨', '⭐'] });
+    }, 180);
+  }
+
+  function rain() {
+    var em = ['🎉', '🍕', '🎮', '🍻', '⚔️', '🏆', '🔥', '🎧', '🥳', '💥', '🍿', '🕹️'];
+    for (let i = 0; i < 48; i++) {
+      const r = deco('span', 'rain', em[i % em.length]);
+      r.style.left = (Math.random() * 96 + 2) + 'vw';
+      r.style.fontSize = (18 + Math.random() * 24) + 'px';
+      document.body.appendChild(r);
+      var spin = (Math.random() * 2 - 1) * 720;
+      r.animate([
+        { transform: 'translateY(-12vh) rotate(0deg)' },
+        { transform: 'translateY(112vh) rotate(' + spin + 'deg)' }
+      ], { duration: 2400 + Math.random() * 2200, delay: Math.random() * 2000, easing: 'cubic-bezier(.3, 0, .7, 1)', fill: 'backwards' }).onfinish = function () { r.remove(); };
+    }
+  }
+
+  // ---------- Overskrift ----------
+  var titleEl = $('title');
+  (function splitTitle() {
+    var text = titleEl.textContent.trim();
+    titleEl.setAttribute('aria-label', text);
+    titleEl.textContent = '';
+    // Kun animer, når browseren faktisk tegner frames; ellers forbliver bogstaverne synlige.
+    if (!calm()) requestAnimationFrame(function () { titleEl.classList.add('enter'); });
+    var i = 0;
+    var words = text.split(/\s+/);
+    words.forEach(function (w, wi) {
+      var word = deco('span', 'word');
+      Array.from(w).forEach(function (c) {
+        var ch = el('span', 'ch', c);
+        ch.style.setProperty('--i', i++);
+        word.appendChild(ch);
+      });
+      titleEl.appendChild(word);
+      if (wi < words.length - 1) titleEl.appendChild(document.createTextNode(' '));
+    });
+  })();
+
+  var taps = [];
+  titleEl.addEventListener('click', function (e) {
+    var now = Date.now();
+    taps = taps.filter(function (t) { return now - t < 2000; });
+    taps.push(now);
+    burst(e.clientX, e.clientY, { n: 6, spread: 34 });
+    if (taps.length >= 5) { taps = []; partyMode(); }
+  });
+
+  // ---------- Klistermærker ----------
+  // emoji, x %, y %, størrelse rem, rotation, dybde, vis på mobil
+  var STICKERS = [
+    ['🎮', 80, 9, 3.4, -14, 22, 1],
+    ['🍕', 93, 30, 2.6, 12, 14, 0],
+    ['🎧', 69, 33, 2.4, -6, 30, 0],
+    ['⚔️', 92, 44, 3, 18, 18, 1],
+    ['🏆', 64, 7, 2, 8, 26, 0],
+    ['🥤', 4, 18, 2.4, -10, 16, 0],
+    ['🎲', 6, 58, 2.2, 20, 24, 0],
+    ['🔥', 90, 86, 2.2, -8, 12, 1],
+    ['🧪', 3, 88, 2, 14, 20, 0],
+    ['🕹️', 77, 58, 2.6, 10, 32, 0],
+    ['🍿', 95, 66, 2, -16, 10, 0]
+  ];
+  var stk = $('stickers');
+  STICKERS.forEach(function (d, i) {
+    var s = el('span', 'stk' + (d[6] ? ' m' : ''));
+    s.style.setProperty('--x', d[1] + '%');
+    s.style.setProperty('--y', d[2] + '%');
+    s.style.setProperty('--s', d[3] + 'rem');
+    s.style.setProperty('--r', d[4] + 'deg');
+    s.style.setProperty('--d', d[5] / 10);
+    var bob = el('span', 'bob');
+    bob.style.setProperty('--dur', (3 + (i % 4) * 0.7) + 's');
+    bob.style.setProperty('--del', (-i * 0.6) + 's');
+    bob.appendChild(el('span', 'em', d[0]));
+    s.appendChild(bob);
+    s.addEventListener('click', function (e) {
+      restart(s, 'pop');
+      burst(e.clientX, e.clientY, { n: 8, emoji: [d[0]], spread: 64 });
+    });
+    stk.appendChild(s);
+  });
+  var hero = document.querySelector('.hero');
+  if (window.matchMedia && window.matchMedia('(pointer: fine)').matches) {
+    hero.addEventListener('pointermove', function (e) {
+      if (calm()) return;
+      var r = hero.getBoundingClientRect();
+      stk.style.setProperty('--px', (((e.clientX - r.left) / r.width) - 0.5) * -20);
+      stk.style.setProperty('--py', (((e.clientY - r.top) / r.height) - 0.5) * -20);
+    });
+    hero.addEventListener('pointerleave', function () {
+      stk.style.setProperty('--px', 0);
+      stk.style.setProperty('--py', 0);
+    });
+  }
 
   // ---------- Nedtælling ----------
   var start = new Date(2026, 10, 12, 16, 30, 0);
   var end = new Date(2026, 10, 15, 13, 0, 0);
-  function dayStart(d) { return new Date(d.getFullYear(), d.getMonth(), d.getDate()); }
-  function updateCountdown() {
-    var now = new Date(), text;
-    if (now >= end) text = 'Tak for denne gang';
-    else if (now >= start) text = 'LAN er i gang';
-    else {
-      var days = Math.round((dayStart(start) - dayStart(now)) / 86400000);
-      text = days > 1 ? 'Om ' + days + ' dage' : days === 1 ? 'I morgen kl. 16.30' : 'I dag kl. 16.30';
+  var shown = {};
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function setCell(id, val) {
+    if (shown[id] === val) return;
+    var first = shown[id] === undefined;
+    shown[id] = val;
+    var b = $(id);
+    b.textContent = val;
+    if (!first && canAnimate()) {
+      requestAnimationFrame(function () {
+        b.animate([{ transform: 'translateY(-40%)', opacity: 0.2 }, { transform: 'none', opacity: 1 }], { duration: 380, easing: 'cubic-bezier(.16, 1, .3, 1)' });
+      });
     }
-    $('countdown').textContent = text;
   }
-  updateCountdown();
-  setInterval(updateCountdown, 60000);
+  function tick() {
+    var now = new Date();
+    if (now >= start) {
+      $('timer-cells').hidden = true;
+      $('timer-label').hidden = true;
+      var live = $('timer-live');
+      live.hidden = false;
+      live.textContent = now >= end ? 'GG! Tak for denne gang' : 'LAN er i gang!';
+      live.classList.toggle('on', now < end);
+      return;
+    }
+    var s = Math.floor((start - now) / 1000);
+    setCell('t-d', pad(Math.floor(s / 86400)));
+    setCell('t-h', pad(Math.floor((s % 86400) / 3600)));
+    setCell('t-m', pad(Math.floor((s % 3600) / 60)));
+    setCell('t-s', pad(s % 60));
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  // ---------- HUD: aktiv sektion og genveje ----------
+  var navLinks = Array.prototype.slice.call(document.querySelectorAll('.hud-links a'));
+  var navSecs = navLinks.map(function (a) { return document.querySelector(a.getAttribute('href')); });
+  var spyQueued = false;
+  function spy() {
+    spyQueued = false;
+    var line = window.innerHeight * 0.35, cur = -1;
+    navSecs.forEach(function (s, i) { if (s && s.getBoundingClientRect().top <= line) cur = i; });
+    navLinks.forEach(function (a, i) {
+      if (i === cur) a.setAttribute('aria-current', 'true');
+      else a.removeAttribute('aria-current');
+    });
+  }
+  window.addEventListener('scroll', function () {
+    if (!spyQueued) { spyQueued = true; requestAnimationFrame(spy); }
+  }, { passive: true });
+  spy();
+
+  var KONAMI = ['arrowup', 'arrowup', 'arrowdown', 'arrowdown', 'arrowleft', 'arrowright', 'arrowleft', 'arrowright', 'b', 'a'];
+  var kpos = 0;
+  document.addEventListener('keydown', function (e) {
+    var t = e.target || {};
+    var typing = /^(INPUT|TEXTAREA|SELECT)$/.test(t.tagName || '') || t.isContentEditable;
+    if (typing || e.ctrlKey || e.metaKey || e.altKey) return;
+    var key = String(e.key || '').toLowerCase();
+    if (key === KONAMI[kpos]) {
+      kpos++;
+      if (kpos === KONAMI.length) { kpos = 0; partyMode(); }
+    } else {
+      kpos = key === KONAMI[0] ? 1 : 0;
+    }
+    var k = parseInt(e.key, 10);
+    if (k >= 1 && k <= navSecs.length && navSecs[k - 1]) {
+      navSecs[k - 1].scrollIntoView({ behavior: calm() ? 'auto' : 'smooth', block: 'start' });
+    }
+  });
+
+  var SECRET_KEY = 'lan-skive-2026-kode';
+  var secretFound = store(SECRET_KEY) === '1';
+  var partyTimer = null;
+  function partyMode() {
+    secretFound = true;
+    store(SECRET_KEY, '1');
+    evalAch();
+    if (!canAnimate()) { toast('🕹️', 'Snydekode aktiveret', 'Party mode er slået til.', 'grape'); return; }
+    document.body.classList.add('party');
+    rain();
+    clearTimeout(partyTimer);
+    partyTimer = setTimeout(function () { document.body.classList.remove('party'); }, 6500);
+  }
 
   // ---------- Pakkeliste (lokalt) ----------
   var PACK_KEY = 'lan-skive-2026-pak';
@@ -506,28 +1220,57 @@ footer .wrap { display: grid; gap: 4px; }
   var saved = {};
   try { saved = JSON.parse(store(PACK_KEY) || '{}') || {}; } catch (e) { saved = {}; }
   boxes.forEach(function (b) { if (saved[b.id]) b.checked = true; });
+  var cells = $('pack-cells');
+  boxes.forEach(function (b, i) {
+    var c = el('i');
+    c.style.setProperty('--i', i);
+    cells.appendChild(c);
+  });
+  function packedCount() { return boxes.filter(function (b) { return b.checked; }).length; }
   function renderPack() {
-    var n = boxes.filter(function (b) { return b.checked; }).length;
-    $('pack-count').textContent = n === boxes.length ? 'Alt er pakket' : n + ' af ' + boxes.length + ' pakket';
-    $('pack-fill').style.width = (n / boxes.length * 100) + '%';
+    var n = packedCount();
+    $('pack-count').textContent = n === boxes.length ? 'Alt er pakket!' : n + ' af ' + boxes.length + ' pakket';
+    Array.prototype.forEach.call(cells.children, function (c, i) { c.classList.toggle('on', i < n); });
+    cells.classList.toggle('full', n === boxes.length);
   }
   function savePack() {
     var o = {};
     boxes.forEach(function (b) { if (b.checked) o[b.id] = 1; });
     store(PACK_KEY, JSON.stringify(o));
   }
-  boxes.forEach(function (b) { b.addEventListener('change', function () { savePack(); renderPack(); }); });
-  $('pack-reset').addEventListener('click', function () { boxes.forEach(function (b) { b.checked = false; }); savePack(); renderPack(); });
+  boxes.forEach(function (b) {
+    b.addEventListener('change', function () {
+      savePack();
+      renderPack();
+      if (b.checked) {
+        var ico = b.parentNode.querySelector('.ico');
+        var p = center(ico || b);
+        floatAt(p.x, p.top, '+10 XP');
+        burst(p.x, p.y, { n: 8, spread: 40 });
+      }
+      evalAch();
+    });
+  });
+  $('pack-reset').addEventListener('click', function () {
+    boxes.forEach(function (b) { b.checked = false; });
+    savePack();
+    renderPack();
+    evalAch();
+  });
   renderPack();
 
   // ---------- Navn ----------
   var NAME_KEY = 'lan-skive-2026-navn';
   var meInput = $('me');
   meInput.value = store(NAME_KEY) || '';
+  var nameTimer = null;
   meInput.addEventListener('input', function () {
     store(NAME_KEY, meInput.value.trim());
     if (meInput.value.trim()) $('me-hint').hidden = true;
     renderIdeas();
+    paintIdentity();
+    clearTimeout(nameTimer);
+    nameTimer = setTimeout(evalAch, 700);
   });
   function me() { return meInput.value.trim(); }
   function requireName() {
@@ -535,8 +1278,15 @@ footer .wrap { display: grid; gap: 4px; }
     $('me-hint').hidden = false;
     meInput.focus();
     meInput.scrollIntoView({ block: 'center' });
+    restart($('spiller'), 'shake');
     return null;
   }
+  function paintIdentity() {
+    var name = me();
+    paintAvatar($('avatar'), name);
+    paintAvatar($('chip-av'), name);
+  }
+  paintAvatar($('host-av'), HOST);
 
   // ---------- Supabase REST ----------
   function api(path, opts) {
@@ -582,6 +1332,7 @@ footer .wrap { display: grid; gap: 4px; }
       state.cooks = r[0]; state.spots = r[1]; state.ideas = r[2];
       setSync(stamp());
       renderAll();
+      evalAch();
     }).catch(function () {
       setSync('Kunne ikke hente fælles data. Tjek forbindelsen og prøv igen.', true);
       renderAll();
@@ -589,12 +1340,150 @@ footer .wrap { display: grid; gap: 4px; }
   }
   $('sync-retry').addEventListener('click', load);
 
-  function act(btn, promise, failText) {
+  function act(btn, promise, failText, onOk) {
     if (btn) btn.disabled = true;
-    return promise.then(load).catch(function (e) {
+    return promise.then(function (r) {
+      if (onOk) { try { onOk(r); } catch (e) {} }
+      return load();
+    }).catch(function (e) {
       setSync(failText || ('Det gik ikke: ' + e.message), true);
       if (btn) btn.disabled = false;
     });
+  }
+
+  // ---------- XP, levels og achievements ----------
+  var LEVELS = [[0, 'Noob'], [50, 'Rookie'], [120, 'Pakkeæsel'], [200, 'Raid-klar'], [300, 'Veteran'], [420, 'Tryhard'], [560, 'LAN-legende']];
+  var ACH = [
+    { id: 'pak', scope: 'device', ico: '🎒', name: 'Klar til afgang', desc: 'Pak alt på pakkelisten.' },
+    { id: 'seng', scope: 'me', ico: '🛏️', name: 'Fandt en køje', desc: 'Skriv dig på en soveplads.' },
+    { id: 'kok', scope: 'me', ico: '🍳', name: 'Mesterkok', desc: 'Tag en aften i madplanen.' },
+    { id: 'stem', scope: 'me', ico: '🗳️', name: 'Demokrat', desc: 'Stem på en aktivitet.' },
+    { id: 'ide', scope: 'me', ico: '💡', name: 'Idémager', desc: 'Foreslå en ny aktivitet.' },
+    { id: 'hold', scope: 'team', ico: '👥', name: 'Fuldt hold', desc: 'Alle fem sovepladser er taget.' },
+    { id: 'mad', scope: 'team', ico: '🔥', name: 'Ingen sulter', desc: 'Alle tre aftener har en kok.' },
+    { id: 'kode', scope: 'device', ico: '🕹️', name: 'Snydekoden', desc: 'Du fandt den hemmelige kode.', secret: true }
+  ];
+  var ACH_KEY = 'lan-skive-2026-ach';
+  var badgeEls = {};
+  ACH.forEach(function (a) {
+    var li = el('li');
+    var b = el('button', 'badge locked');
+    b.type = 'button';
+    var medal = deco('span', 'medal');
+    var em = el('span', 'em', a.secret ? '❔' : a.ico);
+    medal.appendChild(em);
+    var nm = el('span', 'bn', a.secret ? '???' : a.name);
+    b.appendChild(medal);
+    b.appendChild(nm);
+    b.addEventListener('click', function () {
+      var on = !b.classList.contains('locked');
+      if (on) toast(a.ico, a.name, 'Låst op! ' + a.desc, 'gold');
+      else if (a.secret) toast('❔', 'Hemmelig', 'Prøv at drille overskriften. Eller tast en klassisk snydekode.');
+      else toast(a.ico, a.name, a.desc);
+    });
+    li.appendChild(b);
+    $('badges').appendChild(li);
+    badgeEls[a.id] = { btn: b, em: em, nm: nm };
+  });
+
+  function levelOf(xp) {
+    var i = 0;
+    while (i + 1 < LEVELS.length && xp >= LEVELS[i + 1][0]) i++;
+    return i;
+  }
+
+  function stats() {
+    var n = norm(me());
+    var packed = packedCount();
+    var s = {
+      loaded: !!(state.cooks && state.spots && state.ideas),
+      packed: packed, votes: 0, ideas: 0, cooks: 0, spot: false
+    };
+    if (n) {
+      if (n === norm(HOST)) s.spot = true;
+      (state.spots || []).forEach(function (sp) { if (norm(sp.person_name) === n) s.spot = true; });
+      (state.cooks || []).forEach(function (c) { if (norm(c.cook_name) === n) s.cooks++; });
+      (state.ideas || []).forEach(function (i) {
+        if (norm(i.added_by) === n) s.ideas++;
+        if (i.idea_votes.some(function (v) { return norm(v.voter) === n; })) s.votes++;
+      });
+    }
+    s.xp = packed * 10 + s.votes * 20 + s.ideas * 40 + (s.spot ? 75 : 0) + s.cooks * 100;
+    s.got = {
+      pak: packed === boxes.length,
+      seng: s.spot,
+      kok: s.cooks > 0,
+      stem: s.votes > 0,
+      ide: s.ideas > 0,
+      hold: !!(state.spots && state.spots.length && state.spots.every(function (sp) { return sp.person_name; })),
+      mad: !!(state.cooks && state.cooks.length && state.cooks.every(function (c) { return c.cook_name; })),
+      kode: secretFound
+    };
+    return s;
+  }
+
+  function renderPlayer(s) {
+    paintIdentity();
+    var lv = levelOf(s.xp), cur = LEVELS[lv][0], next = LEVELS[lv + 1];
+    var frac = next ? (s.xp - cur) / (next[0] - cur) : 1;
+    frac = 'scaleX(' + Math.max(0, Math.min(1, frac)) + ')';
+    $('lvl').textContent = 'LVL ' + (lv + 1);
+    $('lvl-title').textContent = LEVELS[lv][1];
+    $('xp-num').textContent = next ? s.xp + ' / ' + next[0] + ' XP' : s.xp + ' XP · MAX';
+    $('xpfill').style.transform = frac;
+    $('chip-xp').style.transform = frac;
+    $('chip-lvl').textContent = 'LVL ' + (lv + 1);
+    $('me-chip').setAttribute('aria-label', 'Din spiller: level ' + (lv + 1) + ', ' + s.xp + ' XP');
+    var count = 0;
+    ACH.forEach(function (a) {
+      var b = badgeEls[a.id], on = !!s.got[a.id];
+      var hide = a.secret && !on;
+      if (on) count++;
+      b.btn.classList.toggle('locked', !on);
+      b.em.textContent = hide ? '❔' : a.ico;
+      b.nm.textContent = hide ? '???' : a.name;
+      b.btn.setAttribute('aria-label', 'Achievement: ' + (hide ? 'hemmelig' : a.name) + (on ? ', låst op' : ', ikke låst op'));
+    });
+    $('ach-count').textContent = count + '/' + ACH.length;
+  }
+
+  var seen = null;
+  var lastLv = null, lastLvName = null;
+  function evalAch() {
+    var s = stats();
+    renderPlayer(s);
+    if (!s.loaded) return;
+    var seeding = false;
+    if (seen === null) {
+      try { seen = JSON.parse(store(ACH_KEY) || 'null'); } catch (e) { seen = null; }
+      if (!seen || typeof seen !== 'object') { seen = {}; seeding = true; }
+    }
+    var n = norm(me()), fresh = [];
+    ACH.forEach(function (a) {
+      if (!s.got[a.id]) return;
+      var key = (a.scope === 'me' ? 'me:' + n : a.scope) + '|' + a.id;
+      if (seen[key]) return;
+      seen[key] = 1;
+      if (!seeding) fresh.push(a);
+    });
+    store(ACH_KEY, JSON.stringify(seen));
+    if (fresh.length) celebrate(fresh);
+
+    var lv = levelOf(s.xp);
+    if (lastLv !== null && lastLvName === n && lv > lastLv) {
+      restart($('lvl'), 'up');
+      setTimeout(function () { toast('⬆️', 'Level up!', 'Lvl ' + (lv + 1) + ' · ' + LEVELS[lv][1], 'lime'); }, fresh.length ? 500 : 0);
+      if (!fresh.length) confetti();
+    }
+    lastLv = lv;
+    lastLvName = n;
+  }
+
+  function celebrate(list) {
+    list.forEach(function (a) { restart(badgeEls[a.id].btn, 'just'); });
+    if (list.length === 1) toast(list[0].ico, 'Achievement låst op!', list[0].name, 'gold');
+    else toast('🏆', list.length + ' achievements låst op!', list.map(function (a) { return a.name; }).join(', '), 'gold');
+    confetti();
   }
 
   // ---------- Madplan: aftener ----------
@@ -604,17 +1493,28 @@ footer .wrap { display: grid; gap: 4px; }
       Array.prototype.slice.call(list.querySelectorAll('.dinner, .meal-form')).forEach(function (n) { n.remove(); });
       var slot = state.cooks && state.cooks.filter(function (c) { return c.id === id; })[0];
       var row = el('div', 'meal dinner');
-      row.appendChild(el('span', 'when', 'Aften'));
+      var when = el('span', 'when');
+      when.appendChild(deco('span', 'mi', id === 'lor' ? '🥩' : '🍖'));
+      when.appendChild(document.createTextNode('Aften'));
+      row.appendChild(when);
       if (!slot) {
         row.appendChild(el('span', 'what tbd', state.cooks ? 'Ikke fundet' : 'Henter…'));
         row.appendChild(el('span', 'who'));
         list.appendChild(row);
         return;
       }
-      row.appendChild(el('span', 'what' + (slot.dish ? '' : ' tbd'), slot.dish || 'Ret ikke valgt endnu'));
+      row.classList.add(slot.cook_name ? 'done' : 'open');
+      var what = el('span', 'what' + (slot.dish ? '' : ' tbd'));
+      what.appendChild(document.createTextNode(slot.dish || 'Ret ikke valgt endnu'));
+      if (!slot.cook_name) what.appendChild(el('span', 'tag quest', 'Ledig'));
+      if (id === 'lor') what.appendChild(el('span', 'tag boss', 'Boss-level'));
+      row.appendChild(what);
       var who = el('span', 'who');
       if (slot.cook_name) {
-        who.appendChild(el('span', 'pill', slot.cook_name));
+        var pill = el('span', 'pill cook');
+        pill.appendChild(avatar(slot.cook_name, 'xs'));
+        pill.appendChild(document.createTextNode(slot.cook_name));
+        who.appendChild(pill);
         var edit = el('button', 'linkbtn', 'Ret');
         edit.type = 'button';
         edit.addEventListener('click', function () { openForm = openForm === id ? null : id; focusForm = true; renderCooks(); });
@@ -667,11 +1567,16 @@ footer .wrap { display: grid; gap: 4px; }
           } else {
             var name = requireName();
             if (!name) return;
+            var pt = center(save);
             save.disabled = true;
             api('cook_slots?id=eq.' + id + '&cook_name=is.null', { method: 'PATCH', body: { cook_name: name, dish: dish } })
               .then(function (rows) {
                 openForm = null;
                 if (!rows || !rows.length) setSync('Nogen nåede at tage aftenen før dig.', true);
+                else {
+                  toast('🍳', 'Quest accepteret!', slot.day_label + ': ' + name + ' laver mad. +100 XP', 'lava');
+                  burst(pt.x, pt.y, { n: 14, spread: 70, emoji: ['🍖', '🔥', '✨'] });
+                }
                 return load();
               })
               .catch(function (e) { save.disabled = false; setSync('Det gik ikke: ' + e.message, true); });
@@ -684,25 +1589,41 @@ footer .wrap { display: grid; gap: 4px; }
   }
 
   // ---------- Sovepladser ----------
+  function renderPartyMeter() {
+    var spots = state.spots || [];
+    var n = 1 + spots.filter(function (s) { return s.person_name; }).length;
+    $('party-count').textContent = n + '/5';
+    Array.prototype.forEach.call($('pips').children, function (p, i) { p.classList.toggle('on', i < n); });
+  }
   function renderSpots() {
     var party = $('party');
-    Array.prototype.slice.call(party.querySelectorAll('.slot.dyn')).forEach(function (n) { n.remove(); });
+    Array.prototype.slice.call(party.querySelectorAll('.frame.dyn')).forEach(function (n) { n.remove(); });
     var spots = state.spots || [];
     if (!state.spots) {
       for (var i = 0; i < 4; i++) {
-        var s = el('div', 'slot dyn open');
+        var s = el('div', 'frame dyn open');
         s.appendChild(el('span', 'n', (i + 2) + '/5'));
-        s.appendChild(el('span', 'who', 'Henter…'));
+        s.appendChild(avatar(null));
+        var f = el('span', 'fw');
+        f.appendChild(el('span', 'who', 'Henter…'));
+        s.appendChild(f);
         party.appendChild(s);
       }
+      renderPartyMeter();
       return;
     }
     spots.forEach(function (sp, i) {
       var taken = !!sp.person_name;
-      var card = el('div', 'slot dyn' + (taken ? '' : ' open'));
+      var card = el('div', 'frame dyn' + (taken ? '' : ' open'));
       card.appendChild(el('span', 'n', (i + 2) + '/5'));
-      card.appendChild(el('span', 'who', taken ? sp.person_name : 'Ledig'));
-      card.appendChild(el('span', 'where', sp.spot));
+      card.appendChild(avatar(taken ? sp.person_name : null));
+      var fw = el('span', 'fw');
+      fw.appendChild(el('span', 'who', taken ? sp.person_name : 'Ledig'));
+      var where = el('span', 'where');
+      where.appendChild(deco('span', null, (SPOT_ICON[sp.id] || '💤') + ' '));
+      where.appendChild(document.createTextNode(sp.spot));
+      fw.appendChild(where);
+      card.appendChild(fw);
       var actWrap = el('span', 'act');
       if (taken) {
         var rm = el('button', 'linkbtn', 'Fjern');
@@ -720,15 +1641,24 @@ footer .wrap { display: grid; gap: 4px; }
           var name = requireName();
           if (!name) return;
           var old = spots.filter(function (o) { return o.person_name === name && o.id !== sp.id; });
+          var pt = center(mine);
+          var joined = false;
           mine.disabled = true;
           api('sleep_spots?id=eq.' + sp.id + '&person_name=is.null', { method: 'PATCH', body: { person_name: name } })
             .then(function (rows) {
               if (!rows || !rows.length) { setSync('Pladsen blev taget lige før dig.', true); return; }
+              joined = true;
               return Promise.all(old.map(function (o) {
                 return api('sleep_spots?id=eq.' + o.id, { method: 'PATCH', body: { person_name: null } });
               }));
             })
-            .then(load)
+            .then(function () {
+              if (joined) {
+                toast(SPOT_ICON[sp.id] || '🛏️', name + ' er med i partyet!', old.length ? 'Du er flyttet til ' + sp.spot.toLowerCase() + '.' : sp.spot + ' er din. +75 XP', 'sky');
+                burst(pt.x, pt.y, { n: 14, spread: 64 });
+              }
+              return load();
+            })
             .catch(function (e) { mine.disabled = false; setSync('Det gik ikke: ' + e.message, true); });
         });
         actWrap.appendChild(mine);
@@ -736,16 +1666,23 @@ footer .wrap { display: grid; gap: 4px; }
       card.appendChild(actWrap);
       party.appendChild(card);
     });
+    renderPartyMeter();
   }
 
   // ---------- Idéer og stemmer ----------
+  var RARITY = { common: 'Almindelig', uncommon: 'Ualmindelig', rare: 'Sjælden', epic: 'Episk', legendary: 'Legendarisk' };
+  function rarity(n) { return n >= 4 ? 'legendary' : n === 3 ? 'epic' : n === 2 ? 'rare' : n === 1 ? 'uncommon' : 'common'; }
+
   function renderIdeas() {
     var acts = $('acts');
     acts.textContent = '';
     var name = me();
     CATEGORIES.forEach(function (cat) {
       var panel = el('div', 'panel act');
-      panel.appendChild(el('h3', null, cat));
+      var h = el('h3');
+      h.appendChild(deco('span', 'e', CAT_ICON[cat] || '✨'));
+      h.appendChild(document.createTextNode(cat));
+      panel.appendChild(h);
       if (!state.ideas) {
         panel.appendChild(el('p', 'empty', 'Henter…'));
         acts.appendChild(panel);
@@ -754,16 +1691,21 @@ footer .wrap { display: grid; gap: 4px; }
       var items = state.ideas.filter(function (i) { return i.category === cat; });
       items.sort(function (a, b) { return (b.idea_votes.length - a.idea_votes.length) || (a.id - b.id); });
       if (!items.length) {
-        panel.appendChild(el('p', 'empty', 'Ingen idéer endnu.'));
+        panel.appendChild(el('p', 'empty', 'Ingen idéer endnu. Vær den første!'));
         acts.appendChild(panel);
         return;
       }
+      var top = items[0].idea_votes.length;
+      var second = items[1] ? items[1].idea_votes.length : -1;
       var ul = el('ul', 'idea-list');
-      items.forEach(function (idea) {
+      items.forEach(function (idea, idx) {
         var voters = idea.idea_votes.map(function (v) { return v.voter; });
         var voted = !!name && voters.indexOf(name) !== -1;
-        var li = el('li', 'idea');
+        var r = rarity(voters.length);
+        var li = el('li', 'idea r-' + r);
+        li.appendChild(deco('span', 'gem'));
         var t = el('span', 'title');
+        t.appendChild(el('span', 'sr-only', RARITY[r] + ': '));
         if (idea.url) {
           var a = el('a', null, idea.title);
           a.href = idea.url; a.target = '_blank'; a.rel = 'noopener';
@@ -771,25 +1713,40 @@ footer .wrap { display: grid; gap: 4px; }
         } else {
           t.appendChild(document.createTextNode(idea.title));
         }
+        if (idx === 0 && top > 0 && top > second) {
+          var crown = el('span', 'crown', '👑');
+          crown.title = 'Fører i kategorien';
+          crown.setAttribute('role', 'img');
+          crown.setAttribute('aria-label', 'fører i kategorien');
+          t.appendChild(crown);
+        }
         var meta = [];
         if (idea.added_by) meta.push('Foreslået af ' + idea.added_by);
         if (voters.length) meta.push('Stemmer: ' + voters.join(', '));
         if (meta.length) t.appendChild(el('span', 'by', meta.join(' · ')));
         li.appendChild(t);
-        var btn = el('button', 'vote', voters.length + (voters.length === 1 ? ' stemme' : ' stemmer'));
+        var btn = el('button', 'vote');
         btn.type = 'button';
+        btn.appendChild(deco('span', 'arrow', '▲'));
+        btn.appendChild(document.createTextNode(String(voters.length)));
         btn.setAttribute('aria-pressed', voted ? 'true' : 'false');
-        btn.setAttribute('aria-label', (voted ? 'Fjern din stemme fra ' : 'Stem på ') + idea.title);
+        btn.setAttribute('aria-label', (voted ? 'Fjern din stemme fra ' : 'Stem på ') + idea.title + ', ' + voters.length + (voters.length === 1 ? ' stemme' : ' stemmer'));
         btn.addEventListener('click', function () {
           var n = requireName();
           if (!n) return;
+          var pt = center(btn);
           if (voted) {
-            act(btn, api('idea_votes?idea_id=eq.' + idea.id + '&voter=eq.' + encodeURIComponent(n), { method: 'DELETE' }));
+            act(btn, api('idea_votes?idea_id=eq.' + idea.id + '&voter=eq.' + encodeURIComponent(n), { method: 'DELETE' }), null, function () {
+              floatAt(pt.x, pt.top, '-20 XP', 'var(--muted)');
+            });
           } else {
             act(btn, api('idea_votes', { method: 'POST', body: { idea_id: idea.id, voter: n } }).catch(function (e) {
               if (e.status === 409) return null;
               throw e;
-            }));
+            }), null, function () {
+              floatAt(pt.x, pt.top, '+20 XP');
+              burst(pt.x, pt.y, { n: 10, spread: 46 });
+            });
           }
         });
         li.appendChild(btn);
@@ -807,8 +1764,12 @@ footer .wrap { display: grid; gap: 4px; }
     var title = $('idea-title').value.trim();
     if (title.length < 2) { $('idea-title').focus(); return; }
     var btn = $('idea-submit');
+    var pt = center(btn);
     act(btn, api('ideas', { method: 'POST', body: { category: $('idea-cat').value, title: title, added_by: name } })
-      .then(function () { $('idea-title').value = ''; btn.disabled = false; }));
+      .then(function () { $('idea-title').value = ''; btn.disabled = false; }), null, function () {
+        toast('💡', 'Idé tilføjet!', title + ' · +40 XP', 'grape');
+        burst(pt.x, pt.y, { n: 12, spread: 70, emoji: ['💡', '✨'] });
+      });
   });
 
   function renderAll() {
@@ -817,7 +1778,25 @@ footer .wrap { display: grid; gap: 4px; }
     renderIdeas();
   }
 
+  // ---------- Afslør sektioner ved scroll ----------
+  if ('IntersectionObserver' in window && !calm()) {
+    requestAnimationFrame(function () {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (e) {
+          if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+        });
+      }, { rootMargin: '0px 0px -8% 0px' });
+      Array.prototype.forEach.call(document.querySelectorAll('.rv'), function (n) {
+        // Sektioner, der allerede er i syne ved indlæsning, vises med det samme.
+        if (n.getBoundingClientRect().top < window.innerHeight) n.classList.add('in');
+        else io.observe(n);
+      });
+      document.documentElement.classList.add('reveal-on');
+    });
+  }
+
   renderAll();
+  evalAch();
   load();
   setInterval(function () {
     if (document.visibilityState === 'visible' && openForm === null) load();
@@ -825,6 +1804,8 @@ footer .wrap { display: grid; gap: 4px; }
   document.addEventListener('visibilitychange', function () {
     if (document.visibilityState === 'visible' && openForm === null) load();
   });
+
+  try { console.log('%cGG 🎮%c  Psst: ↑ ↑ ↓ ↓ ← → ← → B A', 'font: bold 16px sans-serif; color: #f2a65a', 'color: #b48cf0'); } catch (e) {}
 })();
 </script>
 </body>
