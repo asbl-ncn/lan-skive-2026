@@ -275,7 +275,7 @@ h3 { margin: 0; font: 700 0.8rem var(--f-pixel); letter-spacing: 0.06em; text-tr
 .callout strong { font: 700 0.75rem var(--f-pixel); letter-spacing: 0.06em; text-transform: uppercase; color: var(--acc); }
 .empty { color: var(--muted); font-style: italic; margin: 0; }
 
-input[type="text"], select {
+input[type="text"], input[type="password"], select {
   font: inherit;
   font-size: 1rem;
   color: var(--text);
@@ -287,7 +287,7 @@ input[type="text"], select {
   transition: border-color 0.2s, box-shadow 0.2s;
 }
 input[type="text"]::placeholder { color: var(--muted); opacity: 0.8; }
-input[type="text"]:focus, select:focus { outline: none; border-color: var(--acc); box-shadow: 0 0 0 4px color-mix(in srgb, var(--acc) 28%, transparent); }
+input[type="text"]:focus, input[type="password"]:focus, select:focus { outline: none; border-color: var(--acc); box-shadow: 0 0 0 4px color-mix(in srgb, var(--acc) 28%, transparent); }
 
 .btn {
   font: 800 0.9rem var(--f-body);
@@ -574,6 +574,27 @@ input[type="text"]:focus, select:focus { outline: none; border-color: var(--acc)
 .vote:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink-deep); }
 .vote[aria-pressed="true"] { background: var(--grape); border-color: var(--ink-deep); color: var(--on-acc); box-shadow: 0 3px 0 var(--acc-deep); }
 .add-idea { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; padding: 16px 18px; }
+.admin .idea { grid-template-columns: auto minmax(0, 1fr) auto auto; }
+.del {
+  display: inline-grid;
+  place-items: center;
+  min-width: 34px;
+  height: 29px;
+  padding: 0 7px;
+  font: 800 0.78rem var(--f-body);
+  color: var(--muted);
+  background: var(--ink-0);
+  border: 2px solid var(--line);
+  border-radius: 9px;
+  cursor: pointer;
+  white-space: nowrap;
+  box-shadow: 0 3px 0 var(--ink-deep);
+  transition: transform 0.12s var(--ease-out), box-shadow 0.12s, background-color 0.2s, border-color 0.2s, color 0.2s;
+}
+.del:hover { border-color: var(--lava); color: var(--text); }
+.del:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink-deep); }
+.del.armed { background: var(--lava); border-color: var(--ink-deep); color: var(--on-acc); }
+body:not(.admin) .admin-note { display: none; }
 .add-idea input { flex: 1 1 240px; }
 
 /* Lykkehjul */
@@ -655,6 +676,10 @@ input[type="text"]:focus, select:focus { outline: none; border-color: var(--acc)
 footer { color: var(--muted); font-size: 0.85rem; padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px)); }
 footer .wrap { display: grid; gap: 4px; }
 .psst { font: 700 0.68rem var(--f-pixel); color: color-mix(in srgb, var(--muted) 60%, var(--ink-0)); margin-top: 8px; }
+.admin-box { display: grid; gap: 8px; justify-items: start; margin-top: 14px; }
+.admin-form { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.admin-form input { width: 190px; }
+.admin-on { margin: 0; color: var(--gold); font-weight: 600; }
 
 /* ---------- Effekter ---------- */
 .toasts {
@@ -960,6 +985,7 @@ body.party .stk .em { animation: whirl 0.9s linear infinite; }
         <li><span class="gem r-epic" aria-hidden="true"></span>3 Episk</li>
         <li><span class="gem r-legendary" aria-hidden="true"></span>4+ Legendarisk</li>
       </ul>
+      <p class="callout admin-note" data-acc="gold"><strong>Admin</strong><span>Tryk på 🗑️ og derefter "Fjern?" for at fjerne en idé. Den forsvinder for alle, og stemmerne på den forsvinder med.</span></p>
       <div class="acts" id="acts"></div>
       <form class="panel add-idea" id="idea-form">
         <label class="sr-only" for="idea-cat">Kategori</label>
@@ -996,6 +1022,17 @@ body.party .stk .em { animation: whirl 0.9s linear infinite; }
     <span>Kokke, sovepladser og idéer gemmes i en fælles database, som alle med linket kan skrive i.</span>
     <span>Sidst opdateret 5. november 2026</span>
     <span class="psst">Psst. Der er gemt en snydekode på siden.</span>
+    <div class="admin-box">
+      <button class="linkbtn" id="admin-open" type="button">🔑 Vært? Lås admin op</button>
+      <form class="admin-form" id="admin-form" hidden>
+        <label class="sr-only" for="admin-code">Adminkode</label>
+        <input type="password" id="admin-code" autocomplete="off" placeholder="Adminkode">
+        <button class="btn" type="submit" id="admin-submit">Lås op</button>
+        <button class="ghost" type="button" id="admin-cancel">Annullér</button>
+      </form>
+      <p class="hint" id="admin-msg" hidden></p>
+      <p class="admin-on" id="admin-on" hidden>🔑 Admin er slået til på denne enhed. Du kan fjerne idéer under Aktiviteter. <button class="linkbtn" id="admin-off" type="button">Lås igen</button></p>
+    </div>
   </div>
 </footer>
 
@@ -1853,6 +1890,7 @@ body.party .stk .em { animation: whirl 0.9s linear infinite; }
           }
         });
         li.appendChild(btn);
+        if (adminCode) li.appendChild(deleteButton(idea));
         ul.appendChild(li);
       });
       panel.appendChild(ul);
@@ -2029,6 +2067,113 @@ body.party .stk .em { animation: whirl 0.9s linear infinite; }
   $('wheel-spin2').addEventListener('click', spinWheel);
   $('wheel-cat').addEventListener('change', function () { renderWheel(true); });
   $('wheel-weight').addEventListener('change', function () { renderWheel(true); });
+
+  // ---------- Admin: værten kan fjerne idéer ----------
+  // Koden tjekkes i databasen (admin_check / admin_delete_idea) og gemmes kun i værtens egen browser.
+  var ADMIN_KEY = 'lan-skive-2026-admin';
+  var adminCode = store(ADMIN_KEY) || null;
+
+  function renderAdminBox() {
+    $('admin-open').hidden = !!adminCode;
+    $('admin-on').hidden = !adminCode;
+    if (adminCode) $('admin-form').hidden = true;
+    document.body.classList.toggle('admin', !!adminCode);
+  }
+  function setAdmin(code) {
+    adminCode = code || null;
+    if (adminCode) store(ADMIN_KEY, adminCode);
+    else { try { localStorage.removeItem(ADMIN_KEY); } catch (e) {} }
+    renderAdminBox();
+    renderIdeas();
+  }
+  function adminMsg(text) {
+    $('admin-msg').textContent = text || '';
+    $('admin-msg').hidden = !text;
+  }
+
+  function deleteButton(idea) {
+    var del = el('button', 'del', '🗑️');
+    del.type = 'button';
+    del.setAttribute('aria-label', 'Fjern idéen ' + idea.title);
+    var timer = null;
+    del.addEventListener('click', function () {
+      if (!del.classList.contains('armed')) {
+        del.classList.add('armed');
+        del.textContent = 'Fjern?';
+        del.setAttribute('aria-label', 'Bekræft: fjern idéen ' + idea.title);
+        timer = setTimeout(function () {
+          del.classList.remove('armed');
+          del.textContent = '🗑️';
+          del.setAttribute('aria-label', 'Fjern idéen ' + idea.title);
+        }, 3000);
+        return;
+      }
+      clearTimeout(timer);
+      var pt = center(del);
+      var call = api('rpc/admin_delete_idea', { method: 'POST', body: { code: adminCode, target: idea.id } })
+        .catch(function (e) {
+          if (e.status === 401 || e.status === 403) {
+            setAdmin(null);
+            toast('🔒', 'Adminkoden virker ikke', 'Lås op igen nederst på siden.');
+          }
+          throw e;
+        });
+      act(del, call, null, function () {
+        if (wheelWon === idea.id) wheelWon = null;
+        toast('🗑️', 'Idé fjernet', idea.title, 'lava');
+        burst(pt.x, pt.y, { n: 8, spread: 50, emoji: ['💨'] });
+      });
+    });
+    return del;
+  }
+
+  $('admin-open').addEventListener('click', function () {
+    $('admin-open').hidden = true;
+    $('admin-form').hidden = false;
+    adminMsg('');
+    $('admin-code').focus();
+  });
+  $('admin-cancel').addEventListener('click', function () {
+    $('admin-form').hidden = true;
+    $('admin-open').hidden = false;
+    $('admin-code').value = '';
+    adminMsg('');
+  });
+  $('admin-off').addEventListener('click', function () {
+    setAdmin(null);
+    toast('🔒', 'Admin låst', 'Skraldespandene er væk igen.');
+  });
+  $('admin-form').addEventListener('submit', function (ev) {
+    ev.preventDefault();
+    var code = $('admin-code').value;
+    if (!code) { $('admin-code').focus(); return; }
+    var btn = $('admin-submit');
+    btn.disabled = true;
+    adminMsg('');
+    api('rpc/admin_check', { method: 'POST', body: { code: code } })
+      .then(function (ok) {
+        if (ok === true) {
+          $('admin-code').value = '';
+          setAdmin(code);
+          toast('🔑', 'Admin slået til', 'Du kan nu fjerne idéer under Aktiviteter.', 'gold');
+        } else {
+          adminMsg('Forkert kode.');
+          $('admin-code').select();
+        }
+      })
+      .catch(function (e) {
+        adminMsg(e.status === 404 ? 'Admin er ikke sat op i databasen endnu.' : 'Det gik ikke: ' + e.message);
+      })
+      .then(function () { btn.disabled = false; });
+  });
+
+  renderAdminBox();
+  if (adminCode) {
+    // Tjek at den gemte kode stadig gælder (fx hvis koden er skiftet i Supabase).
+    api('rpc/admin_check', { method: 'POST', body: { code: adminCode } })
+      .then(function (ok) { if (ok !== true) setAdmin(null); })
+      .catch(function (e) { if (e.status === 404 || e.status === 401 || e.status === 403) setAdmin(null); });
+  }
 
   function renderAll() {
     renderCooks();

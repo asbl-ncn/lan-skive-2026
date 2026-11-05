@@ -10,6 +10,17 @@ Her kan man se pakkelisten, skrive sig på en soveplads, tage en aften i madplan
 
 - `index.html`: hele siden. Den er statisk og hostes på GitHub Pages fra `main`.
 - `supabase-skema.sql`: tabeller, adgangsregler og startdata til databasen bag siden.
+- `supabase-admin.sql`: adminkode, så værten kan fjerne idéer fra siden.
+
+## Admin
+
+Værten kan fjerne idéer under Aktiviteter:
+
+1. Kør `supabase-admin.sql` i SQL Editor. Skift `SKRIV-DIN-KODE-HER` til din egen kode, men kun i SQL Editor og ikke i filen her.
+2. Klik **🔑 Vært? Lås admin op** nederst på siden og skriv koden.
+3. Hver idé får nu en 🗑️. Tryk én gang og derefter på "Fjern?" for at bekræfte.
+
+Koden gemmes som bcrypt-hash i databasen og kun i din egen browser. Klik **Lås igen** for at slå admin fra på enheden.
 
 ## Database
 
